@@ -1,0 +1,318 @@
+{
+  "categories": [
+    {
+      "id": "Block",
+      "name": "Chassis",
+      "type": "single",
+      "priority": 1,
+      "required": true,
+      "icon": "chassis"
+    },
+    {
+      "id": "Wheelbase",
+      "name": "Wheelbase",
+      "type": "single",
+      "priority": 1,
+      "required": true,
+      "icon": "wheelbase"
+    },
+    {
+      "id": "Motor",
+      "name": "Electric Motor",
+      "type": "single",
+      "priority": 1,
+      "required": true,
+      "icon": "motor"
+    },
+    {
+      "id": "Tire",
+      "name": "Wheels & Tires",
+      "type": "single",
+      "priority": 1,
+      "required": true,
+      "icon": "tire"
+    },
+    {
+      "id": "Control",
+      "name": "Steering Control",
+      "type": "single",
+      "priority": 2,
+      "required": true,
+      "icon": "control"
+    },
+    {
+      "id": "Seat",
+      "name": "Seating",
+      "type": "single",
+      "priority": 2,
+      "required": true,
+      "icon": "seat"
+    },
+    {
+      "id": "Body",
+      "name": "Body Parts",
+      "type": "multi",
+      "priority": 3,
+      "required": false,
+      "icon": "body"
+    },
+    {
+      "id": "Accessories",
+      "name": "Accessories",
+      "type": "multi",
+      "priority": 4,
+      "required": false,
+      "icon": "accessories"
+    },
+    {
+      "id": "Color",
+      "name": "Color & Finish",
+      "type": "single",
+      "priority": 5,
+      "required": false,
+      "icon": "palette"
+    }
+  ],
+  "parts": [
+    {
+      "id": "block-single",
+      "name": "Single Block",
+      "category": "Block",
+      "glb": "block.glb",
+      "node": "Block_Single",
+      "sku": "BLK-SG",
+      "price": 0,
+      "status": "available",
+      "description": "Single width chassis block"
+    },
+    {
+      "id": "wb-1130",
+      "name": "Short Wheelbase 1130",
+      "category": "Wheelbase",
+      "glb": "wb.glb",
+      "node": "WB_1130",
+      "sku": "WB-1130",
+      "price": 0,
+      "status": "available",
+      "description": "short wheelbase"
+    },
+    {
+      "id": "wb-1330",
+      "name": "Long Wheelbase 1330",
+      "category": "Wheelbase",
+      "glb": "wb.glb",
+      "node": "WB_1330",
+      "sku": "WB-1330",
+      "price": 0,
+      "status": "available",
+      "description": "long wheelbase "
+    },
+    {
+      "id": "motor-a-1330",
+      "name": "Motor A 1330",
+      "category": "Motor",
+      "glb": "motor.glb",
+      "node": "Motor_A_1330",
+      "sku": "MOT-A-1330",
+      "price": 0,
+      "status": "available",
+      "description": "Motor Type A For short wheelbase"
+    },
+    {
+      "id": "tire-offroad-1330",
+      "name": "Offroad Tires 1330",
+      "category": "Tire",
+      "glb": "tire.glb",
+      "node": "Tire_Offroad_1330",
+      "sku": "TIRE-OFF-1330",
+      "price": 549,
+      "status": "available",
+      "description": "All-terrain tires for Long wheelbase "
+    },
+    {
+      "id": "control-column",
+      "name": "Column Standard Position",
+      "category": "Control",
+      "glb": "control.glb",
+      "node": "Control_Column",
+      "sku": "CTL-COL",
+      "price": 0,
+      "status": "available",
+      "description": "Standard Column"
+    },
+    {
+      "id": "control-handlebar",
+      "name": "Handle Bar",
+      "category": "Control",
+      "glb": "control.glb",
+      "node": "Control_Handlebar",
+      "sku": "CTL-HBAR",
+      "price": 0,
+      "status": "available",
+      "description": "Standard Handle Bar"
+    },
+    {
+      "id": "seat-leaning",
+      "name": "Leaning Seat",
+      "category": "Seat",
+      "glb": "seat.glb",
+      "node": "Seat_Leaning",
+      "sku": "SEAT-LEAN",
+      "price": 299,
+      "status": "available",
+      "description": "Compact standing/leaning seat"
+    },
+    {
+      "id": "body-sidesteplg",
+      "name": "Side Steps Large",
+      "category": "Body",
+      "glb": "body.glb",
+      "node": "Body_SideStepLg",
+      "sku": "BODY-STEPL",
+      "price": 249,
+      "status": "available",
+      "description": "Foot side steps Large"
+    },
+    {
+      "id": "body-fenders",
+      "name": "Fenders",
+      "category": "Body",
+      "glb": "body.glb",
+      "node": "Body_Fenders",
+      "sku": "BODY-FEND",
+      "price": 179,
+      "status": "available",
+      "description": "Wheel fenders"
+    },
+    {
+      "id": "body-frontbumper",
+      "name": "Front Bumper",
+      "category": "Body",
+      "glb": "body.glb",
+      "node": "Body_FrontBumper",
+      "sku": "BODY-FBUMP",
+      "price": 299,
+      "status": "available",
+      "description": "Multifunctional front bumper"
+    },
+    {
+      "id": "body-rearbumper",
+      "name": "Rear Bumper",
+      "category": "Body",
+      "glb": "body.glb",
+      "node": "Body_RearBumper",
+      "sku": "BODY-RBUMP",
+      "price": 299,
+      "status": "available",
+      "description": "Multifunctional rear bumper"
+    }
+  ],
+  "rules": [
+    {
+      "ifPart": "Part_ID that triggers the rule",
+      "relation": "REQUIRES or EXCLUDES",
+      "thenPart": "Part_ID that is affected",
+      "message": "Optional message shown to user"
+    },
+    {
+      "ifPart": "wb-1330",
+      "relation": "REQUIRES",
+      "thenPart": "block-single",
+      "message": ""
+    },
+    {
+      "ifPart": "motor-a-1330",
+      "relation": "REQUIRES",
+      "thenPart": "wb-1330",
+      "message": ""
+    },
+    {
+      "ifPart": "tire-offroad-1330",
+      "relation": "REQUIRES",
+      "thenPart": "motor-a-1330",
+      "message": ""
+    },
+    {
+      "ifPart": "control-column",
+      "relation": "REQUIRES",
+      "thenPart": "block-single",
+      "message": ""
+    },
+    {
+      "ifPart": "control-handlebar",
+      "relation": "REQUIRES",
+      "thenPart": "control-column",
+      "message": ""
+    },
+    {
+      "ifPart": "seat-leaning",
+      "relation": "REQUIRES",
+      "thenPart": "block-single",
+      "message": ""
+    },
+    {
+      "ifPart": "body-sidesteplg",
+      "relation": "REQUIRES",
+      "thenPart": "block-single",
+      "message": ""
+    },
+    {
+      "ifPart": "body-fenders",
+      "relation": "REQUIRES",
+      "thenPart": "block-single",
+      "message": ""
+    },
+    {
+      "ifPart": "body-frontbumper",
+      "relation": "REQUIRES",
+      "thenPart": "block-single",
+      "message": ""
+    },
+    {
+      "ifPart": "body-rearbumper",
+      "relation": "REQUIRES",
+      "thenPart": "block-single",
+      "message": ""
+    }
+  ],
+  "presets": [
+    {
+      "name": "Display name for preset",
+      "description": "Description shown to users",
+      "parts": {
+        "Block": "Block Part_ID",
+        "Wheelbase": "Wheelbase Part_ID",
+        "Tire": "Tire Part_id",
+        "Motor": "Motor Part_ID",
+        "Control": "Control Part_ID",
+        "Seat": "Seat Part_ID",
+        "Wheels": "Wheels Part_ID",
+        "Body": "Body Part_IDs (comma-separated for multiple)",
+        "Accessories": "Accessory Part_IDs (comma-separated)",
+        "Color": "Color Part_ID"
+      }
+    },
+    {
+      "name": "ATV",
+      "description": "All-Terrain Vehicle",
+      "parts": {
+        "Block": "block-single",
+        "Wheelbase": "wb-1330",
+        "Tire": "tire-offroad-1330",
+        "Motor": "motor-a-1330",
+        "Control": [
+          "control-column",
+          "control-handlebar"
+        ],
+        "Seat": "seat-leaning",
+        "Wheels": "wheels-urban",
+        "Body": [
+          "body-sidesteplg",
+          "body-fenders",
+          "body-frontbumper",
+          "body-rearbumper"
+        ]
+      }
+    }
+  ]
+}

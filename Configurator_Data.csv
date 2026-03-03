@@ -1,0 +1,26 @@
+﻿3D CONFIGURATOR - Customer Data Template
+
+HOW TO USE THIS FILE:
+1. Fill in the 'Parts' sheet with all your configurable components
+2. Fill in the 'Rules' sheet with compatibility rules (optional)
+3. Fill in the 'Presets' sheet with pre-built configurations (optional)
+4. Fill in the 'Categories' sheet to define how options are grouped
+
+GLB FILE REQUIREMENTS:
+"• Create ONE .glb file per category (e.g., seats.glb, wheels.glb)"
+• Each GLB contains ALL variants for that category
+• Node names inside GLB must match the 'Node_Name' column exactly
+• Keep base/frame in a separate 'base.glb' file (always loaded first)
+
+PERFORMANCE TIPS:
+• Keep individual GLB files under 10MB for best mobile performance
+• Use Draco compression on all GLB files
+• Limit textures to 2K resolution maximum
+
+COLUMN LEGEND:
+• Yellow = Instructions/Notes
+• Green = Example data (replace with your data)
+• Orange = Required field
+
+NEED HELP?
+Contact your implementation team for GLB preparation assistance.

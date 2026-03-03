@@ -1,0 +1,14 @@
+Category,Part_Name,Part_ID,GLB_File,Node_Name,SKU,Price,Status,Description
+Category name (must match Categories sheet),Display name shown to users,Unique ID (auto-generated if blank),GLB filename containing this part,Exact node name inside the GLB file,Shopify/Inventory SKU code,Price in default currency,available / coming_soon / discontinued,Optional description for tooltips
+Block,Single Block,block-single,block.glb,Block_Single,BLK-SG,XXXX,available,Single width chassis block
+Wheelbase,Short Wheelbase 1130,wb-1130,wb.glb,WB_1130,WB-1130,XXXX,available,short wheelbase
+Wheelbase,Long Wheelbase 1330,wb-1330,wb.glb,WB_1330,WB-1330,XXXX,available,long wheelbase 
+Motor,Motor A 1330,motor-a-1330,motor.glb,Motor_A_1330,MOT-A-1330,XXXX,available,Motor Type A For short wheelbase
+Tire,Offroad Tires 1330,tire-offroad-1330,tire.glb,Tire_Offroad_1330,TIRE-OFF-1330,549,available,All-terrain tires for Long wheelbase 
+Control,Column Standard Position,control-column,control.glb,Control_Column,CTL-COL,XXX,available,Standard Column
+Control,Handle Bar,control-handlebar,control.glb,Control_Handlebar,CTL-HBAR,XXX,available,Standard Handle Bar
+Seat,Leaning Seat,seat-leaning,seat.glb,Seat_Leaning,SEAT-LEAN,299,available,Compact standing/leaning seat
+Body,Side Steps Large,body-sidesteplg,body.glb,Body_SideStepLg,BODY-STEPL,249,available,Foot side steps Large
+Body,Fenders,body-fenders,body.glb,Body_Fenders,BODY-FEND,179,available,Wheel fenders
+Body,Front Bumper,body-frontbumper,body.glb,Body_FrontBumper,BODY-FBUMP,299,available,Multifunctional front bumper
+Body,Rear Bumper,body-rearbumper,body.glb,Body_RearBumper,BODY-RBUMP,299,available,Multifunctional rear bumper

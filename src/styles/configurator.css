@@ -1,0 +1,140 @@
+/* src/styles/configurator.css */
+body,
+html,
+#root {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+  font-family: 'Inter', sans-serif;
+  color: #fff;
+  background: #111;
+}
+
+.app-container {
+  display: flex;
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+}
+
+.canvas-container {
+  flex: 1;
+  position: relative;
+  background: #202020;
+}
+
+.placeholder-canvas {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: #666;
+}
+
+.configurator-ui {
+  width: 350px;
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(10px);
+  padding: 20px;
+  overflow-y: auto;
+  border-left: 1px solid #333;
+}
+
+.sidebar h2 {
+  font-size: 1.2rem;
+  margin-bottom: 20px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.share-section {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.share-btn,
+.reset-btn {
+  flex: 1;
+  padding: 8px;
+  background: #007bff;
+  border: none;
+  border-radius: 4px;
+  color: white;
+  cursor: pointer;
+  font-size: 0.8rem;
+}
+
+.reset-btn {
+  background: #dc3545;
+}
+
+.section {
+  margin-bottom: 30px;
+}
+
+.preset-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.preset-list button {
+  padding: 8px 16px;
+  background: #333;
+  border: 1px solid #444;
+  color: #fff;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: all 0.2s;
+}
+
+.preset-list button:hover {
+  background: #444;
+}
+
+.preset-list button.active {
+  background: #fff;
+  color: #000;
+  border-color: #fff;
+}
+
+.category-group {
+  margin-bottom: 20px;
+}
+
+.category-group h3 {
+  font-size: 0.9rem;
+  color: #888;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+}
+
+.options-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 10px;
+}
+
+.options-grid button {
+  padding: 10px;
+  background: #2a2a2a;
+  border: 1px solid #333;
+  color: #ccc;
+  cursor: pointer;
+  border-radius: 4px;
+  text-align: left;
+  font-size: 0.85rem;
+  transition: all 0.2s;
+}
+
+.options-grid button:hover {
+  border-color: #555;
+}
+
+.options-grid button.active {
+  background: #333;
+  border-color: #fff;
+  color: #fff;
+}

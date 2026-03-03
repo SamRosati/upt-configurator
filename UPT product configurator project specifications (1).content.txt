@@ -1,0 +1,417 @@
+ 
+UPT Configurator – High-level Project Specification (Guideline) 
+Project Brief Summary 
+This project aims to design and deploy a web-based 3D product configurator for the UPT e-commerce 
+portal, enabling customers and partners to visually build, customize, and configure modular vehicles 
+online and proceed directly to checkout. 
+UPT (Utility Personal Transporter) is ENVO’s modular vehicle architecture built around a standardized 
+main frame (“main block”) that supports multiple vehicle types, ranging from consumer mobility 
+solutions to industrial and utility applications, by attaching interchangeable suspension systems, 
+drivetrains, bodies, and accessories. UPT is designed to maximize modularity, scalability, and cross-
+compatibility across products while reducing cost, complexity, and time to market. 
+ 
+The configurator will function similarly to IKEA’s cabinet configurator, offering real-time 3D visualization 
+with rotation, zoom, and step-by-step assembly of frames, modules, and accessories. It will act as a 
+core marketing, sales, and operations enablement tool, reducing manual project discussions with DIY 
+buyers and industrial partners, while streamlining the flow from configuration to POS, inventory 
+management, and manufacturing. It will also serve as an educational and onboarding platform for 
+dealers, upfitters, and assembly partners.
+ 
+----------------Page (0) Break----------------
+ 
+ 
+Initially, the configurator will support limited, sellable configurations across all single-frame UPT 
+products, including Platform, Essential UPT (4×4 scooter), standard eATV, standard LSV, golf cart, 
+cargo bike, industrial transporter, buggy, and compatible accessories, kits, and packages. New 
+components and vehicle designs must be addable on an ongoing basis, including “coming soon” 
+configurations to test market demand or signal future compatibility for existing customers. 
+The system must support two user journeys on the same configurator engine: 
+1.an advanced journey for industrial partners, manufacturers, research institutions, and DIY 
+users, allowing them to build vehicles from a bare main frame and add components layer by 
+layer; and 
+2.a simplified consumer journey starting from pre-configured vehicles with guided customization 
+options. 
+At any stage, the configurator must generate a unique, shareable link that reproduces the exact 
+configuration for internal technical or commercial discussions, customer sharing, social media, and 
+sales negotiations. 
+The platform must be architected for phased expansion, including multiple frame sizes (e.g., extended 
+length, double-wide) and additional UPT platform families. The solution must be built on reliable, open-
+source, industry-standard technologies, avoiding vendor lock-in or ongoing licensing fees. Custom 
+development is acceptable, provided the underlying technology is widely known, maintainable by third-
+party experts, and secure for long-term use. 
+ 
+ 
+ 
+ 
+----------------Page (1) Break----------------
+ 
+ 
+1. Overview 
+● Objective: Build a 3D web configurator for UPT modular vehicles on a new Shopify storefront, 
+enabling both B2C preset customization and advanced build-from-frame assembly. 
+● Phase 1 scope: Advanced journey (Build‑from‑Frame) plus consumer presets, with live pricing, 
+add-to-cart, save/share, multilingual/multicurrency, quotes/PDF, rules with block/suggest, 
+“coming soon” flows, analytics/GA4, basic admin for updates. 
+● Attachments to govern details (provided separately): Assembly logic and matrix, Website 
+wireframe/UX/UI and use journeys, CAD/asset samples. 
+ 
+2. Target audiences and journeys 
+● Audiences: 
+○ Consumers: Quick start from presets (e.g., Golfcart, eATV, LSV) with accessories. 
+○ DIY/industrial/educational: Advanced build-from-frame flow with multi-stage assembly 
+ 
+----------------Page (2) Break----------------
+ 
+and rules. 
+○ Dealers: Use the same configurator with dealer pricing via Shopify (dealer specifics 
+handled in Shopify; not configurator scope). 
+● Journeys in Phase 1: 
+○ Consumer presets: Start from a preconfigured vehicle and customize options. 
+○ Build-from-frame (Build From Frame advanced): Stages include Frame →  
+Suspension/Axles →  Powertrain →  Steering/Brakes →  Body/Seats →  
+Electrical/Lighting →  Cargo/Bed →  Accessories, with conditional rules 
+(warn/block/suggest; no auto-apply). 
+ 
+3. Product scope (Phase 1) 
+● Single-frame modular UPT products: 
+○ Platform, Essential UPT (4x4 scooter), Standard eATV, Standard LSV, Golfcart, Cargo 
+bike, Industrial Transporter, Buggy 
+○ Plus available accessories 
+ 
+----------------Page (3) Break----------------
+ 
+● Future extensibility: Multiple module frames (double width/length), additional platforms in later 
+phases. 
+ 
+ 
+4. March launch feature set (Must-have) 
+● 3D Configurator engine (web): Free orbit/pan/zoom; part highlight on selection; premium visual 
+quality (PBR + AO + mild post-processing); 2–3 selectable environments 
+(studio/outdoor/garage); selections via sidebar only. 
+● Live pricing updates during configuration (Shopify-backed). 
+● Add-to-cart to Shopify checkout (embedded experience). 
+● Save/share builds: 
+○ Server-stored builds with short link IDs (guest save requires email; 12-month 
+retention; consent for marketing).  
+OR 
+○ The configurator will use a Stateless Recipe Code to represent any build. The code 
+(URL/QR‑safe) encodes schema/catalog version and all selected components, includes 
+an integrity check, and allows the app to fully reconstruct the 3D build on load, 
+re‑validate rules, and recalculate pricing from live Shopify data. If a code references 
+deprecated parts, the app blocks the load and suggests valid alternatives (or opens in 
+an ‘archived’ view per policy). For ‘Save,’ we store only the Recipe Code: guests must 
+ 
+----------------Page (4) Break----------------
+ 
+provide an email (12‑month retention) and logged‑in users see saved codes in ‘My 
+Builds.’ Optional short links may redirect to the full recipe URL for sharing. 
+○ Account-linked saves and “My Builds” when logged in. 
+● PDF/quote export: Single-page A4, white background, company logo top-left, 1–3 views (e.g., 
+front 3/4, side, rear 3/4), itemized components with codes/IDs, quantities, prices, 
+subtotal/tax/shipping/total, QR or short link back to build, localized to language/currency, 
+standard legal disclaimer, contact block with signature lines. 
+● Compatibility rules: 
+○ Behaviors: Block invalid selections; show explanation; suggest valid alternatives. No 
+auto-apply at launch. 
+○ Fit/safety rule enforcement in Build From Frame stages. 
+● “Coming soon” item behaviors supported: Preorder, Deposit, Notify-me, View-only (Shopify 
+specifics handled outside configurator; configurator surfaces status and CTA). 
+● Localization and currency: English, French, Spanish; USD, EUR, CAD; units toggle 
+(metric/imperial). Product content sourced from Shopify Translations. 
+● Analytics: GA4 event tracking + an analytics dashboard for engagement and option popularity 
+(platform/vendor TBD in Phase 0). 
+ 
+5. Non-functional requirements 
+● Devices/browsers (March): 
+○ iOS Safari 15+ (iPhone 11/SE2+), iPadOS 15+ 
+○ Android Chrome 100+ (mid-range 2021+) 
+○ Desktop latest Chrome/Edge/Safari/Firefox 
+● Performance budgets: 
+○ Initial 3D payload 8–12 MB; lazy-load additional assemblies 
+○ Time-to-first-interaction ≤ 4s on mid-range mobile over 4G/LTE 
+○ ≥30 fps mobile; ≥60 fps desktop 
+○ Textures capped at 2K; use atlases; at least 2 LODs per large assembly 
+● Fallbacks: 
+○ Auto-switch to lightweight model on low-end devices; last resort static 360 imagery 
+prompt 
+ 
+----------------Page (5) Break----------------
+ 
+6. Platform and integrations (to be decided in Phase 0) 
+● Platform approach: Open-source/self-hosted vs vendor platform vs hybrid. Decision to be made 
+with vendor during Phase 0. 
+● Shopify: New store/theme, embedded configurator. Specific pricing/SKU strategy TBD in Phase 
+0. 
+● Order/BOM handling: S-BOM3 —  orders decomposed into component SKUs (bundle 
+breakdown) so ops/fulfillment see component line items in Shopify. Config details saved as 
+metafields/line item properties as needed. 
+7. Configuration logic and rules model 
+● Rule types: 
+○ Requires: A requires B 
+○ Excludes: A blocks B 
+○ One-of group: choose exactly one from group 
+○ Capacity/fit checks: wheelbase/frame/body fit, powertrain compatibility, tire clearance, 
+electrical limits 
+● Behavior: On incompatible selection →  block with explanation and suggest valid alternatives 
+(R2). 
+● Authoring/updates: Rules provided via CSV matrix and/or lightweight admin UI; vendor to define 
+a simple JSON/CSV schema for import (IDs, groups, requires/excludes, conditions). 
+● Versioning: To be confirmed (whether old shared builds reopen with archived parts or map to 
+nearest current equivalents). 
+ 
+----------------Page (6) Break----------------
+ 
+ 
+ 
+ 
+8. Save/share and accounts 
+● Guest saves require email; consent checkbox for marketing; 12-month retention. 
+● Server-stored config IDs with short links; QR code embedded in PDF. 
+● Logged-in users have “My Builds” with save, duplicate, rename, delete. 
+ 
+----------------Page (7) Break----------------
+ 
+9. Admin and updates (B) 
+● Lightweight back-office for: 
+○ CSV import: options, pricing deltas, rules matrix, availability status (available/coming 
+soon). 
+○ Asset upload per component/preset (GLB/texture bundles prepared by vendor). 
+○ Flags for preorder/deposit/notify/view-only states (Shopify fulfillment logic outside 
+scope). 
+● Documentation/training: Quick-start guide, rules schema cheat sheet, asset prep checklist, 1–2 
+recorded walkthroughs. 
+10. 3D assets and pipeline 
+● Inputs from UPT: STEP files for all assemblies/components; material/color references, 
+decals/branding. 
+● Vendor responsibilities (to an agreed extent): 
+○ CAD optimization (decimation), UV unwrapping, PBR materials, LODs, 
+collision/interaction meshes, baked AO. 
+○ Asset packaging to runtime format (e.g., glTF/GLB) with consistent naming and 
+directory standards. 
+● Visual direction: Clean “Porsche-like” minimal UI; premium but performant rendering with mild 
+post-processing; brand HDRI plus 1–2 alternates. 
+● Deliverables: Asset list, naming convention, source→ runtime mapping, and per-assembly 
+budgets. 
+11. Localization workflow 
+● Product/catalog content: from Shopify Translations API (EN/FR/ES). 
+● Configurator UI/system strings: vendor to provide translation keys; import from Shopify or a 
+simple translation file managed by UPT. 
+● Currency: Shopify multi-currency; configurator displays current currency and units. 
+12. Analytics and tracking 
+● GA4 integration: page views; configurator engaged sessions; step navigation; option selections; 
+rule conflict events; save/share events; add-to-cart events; quote/PDF downloads. 
+ 
+----------------Page (8) Break----------------
+ 
+● Dashboard: engagement and option popularity; baseline vs engaged sessions. Tool/vendor to 
+be confirmed in Phase 0. 
+● Privacy: PII limited to emails for guest saves; consent capture and retention policy respected. 
+13. Security and privacy 
+● NDA for CAD sharing with vendors. 
+● Saved builds and emails stored securely; 12-month retention; deletion upon request. 
+● Cookies/consent banner aligned with Shopify site policy. 
+14. Environments, QA, and acceptance 
+● Environments: dev, staging, production; feature flags for deferred features. 
+● QA scope: 
+○ Device matrix per section 6 
+○ Performance acceptance: load ≤4s on mid-range mobile, frame rate targets 
+○ Visual QA against reference renders 
+○ Rules QA using the provided option matrix 
+○ Localization QA (EN/FR/ES) and currency checks (USD/EUR/CAD) 
+● UAT/Sign-off criteria: 
+○ All must-have features functional per acceptance tests 
+○ No P1/P2 defects open 
+○ Performance targets met on staging 
+○ PDF output meets spec 
+15. Timeline and milestones 
+● Contract sign: Week 3 Jan 2026 
+● Phase 0 (2–3 weeks): Vendor onboarding; tech approach decision (open-source vs platform vs 
+hybrid); finalize pricing/SKU strategy; confirm event schema; asset pipeline setup; accept 
+sample CAD conversion. 
+● Development sprints: 
+○ Sprint 1: Core 3D viewer, preset flow, basic rules scaffolding 
+○ Sprint 2: Build From Frame stages, rules (block/suggest), live pricing plumbing (Shopify 
+TBD), save/share (guest + account) 
+ 
+----------------Page (9) Break----------------
+ 
+○ Sprint 3: PDF export, localization, admin CSV import, analytics/GA4 
+○ Sprint 4: Polish, performance tuning, staging QA/UAT 
+● Internal demo: Week 3 Feb 2026 
+● Public launch target: Week 2 March 2026 
+● Post-launch support: bugfix window and minor improvements 
+16. Risks and mitigations 
+● Build From Frame complexity: Mitigate by strict MVP rules set and staged acceptance of rules; 
+defer measurements/hotspots/AR. 
+● Pricing/SKU strategy TBD: Resolve in Phase 0; prototype early to avoid rework. 
+● Performance on mobile: Enforce asset budgets/LODs and lazy-loading; implement device-
+based fallbacks. 
+● Localization volume: UI strings frozen early; leverage Shopify Translations for product content. 
+● Content accuracy: CAD alignment with production; implement content freeze and review 
+checkpoints. 
+17. Vendor evaluation checklist (RFP prompt) 
+● Demonstrated Three.js/WebGL configurator experience with rules and Shopify integration 
+● Asset pipeline maturity (STEP →  GLB, PBR, LODs) 
+● Proposed tech approach (open-source vs platform vs hybrid) and exit strategy 
+● Shopify integration approach for pricing and BOM breakdown (S-BOM3) 
+● Admin tooling plan (CSV + simple back office) 
+● Analytics plan (GA4 + optional dashboard) 
+● Performance plan (budgets, device coverage, fallbacks) 
+● Project plan/timeline to meet Feb demo/March launch 
+● Post-launch support model and SLAs 
+● Security, privacy, and data handling practices 
+● Budget: creation vs platform/hosting, change budget, and transparent rates 
+ 
+ 
+ 
+----------------Page (10) Break----------------
+ 
+ UPT Configur   ator – Feature Checklist 
+1. Core 3D Configur   ator Capabilities 
+● ☐ Web-based 3D configur      ator (no plugins) 
+● ☐ Real-time 3D visualization with: 
+■ ☐ Orbit / pan / zoom 
+■ ☐ Component highlight on selection 
+■ ☐ Premium rendering (PBR materials, AO, mild post-processing) 
+● ☐ 2–3 selectable environments (studio / outdoor / garage) 
+● ☐ Sidebar-driven configur  ation (no in-scene UI clutter) 
+● ☐ Device-adaptive performance (mobile + desktop) 
+2. Product Configur   ation Logic 
+● ☐ Support two journeys on same engine: 
+■ ☐ Consumer preset flow   
+■ ☐ Advanced “Build From Frame” flow  
+● ☐ Build-from-Frame staged assembly, As per Configur    ation Matrix 
+● ☐ Modular compatibility across all single-frame UPT products 
+● ☐ Future-ready for multi-frame sizes and new platform families 
+3. Rules & Compatibility Engine 
+● ☐ Rules engine with following rule types: 
+■ ☐ Requires (A requires B) 
+■ ☐ Excludes (A blocks B) 
+■ ☐ One-of selection groups 
+■ ☐ Capacity / fit / saf  ety checks 
+● ☐ Rule behaviors: 
+■ ☐ Block invalid selections 
+■ ☐ Explain conflict clearly   
+■ ☐ Suggest valid alternatives 
+■ ☐ No auto-apply (user decides) 
+ 
+----------------Page (11) Break----------------
+ 
+● ☐ CSV / JSON-based rules import 
+● ☐ Rule versioning / deprecated component handling 
+4. Pricing, Commerce & Shopify Integration 
+● ☐ Live pricing updates during configur          ation 
+● ☐ Shopify-backed pricing logic 
+● ☐ Add-to-cart → Shopify checkout (embedded) 
+● ☐ Multi-currency support (USD / CAD / EUR) 
+● ☐ Component-level BOM decomposition (S-BOM3) 
+● ☐ Config metadata saved to Shopify order (line items / metafields)        
+5. Save, Share & Reproducibility 
+● ☐ Generate unique, shareable configur   ation links 
+● ☐ Configur ation fully reproducible from link 
+● ☐ Support Stateless Recipe Code: 
+■ ☐ Encodes schema + selections 
+■ ☐ Integrity validation 
+■ ☐ Re-calculates pricing on load 
+● ☐ Handle deprecated parts gracefully 
+● ☐ QR code support for sharing 
+● ☐ Guest save with email (12-month retention) 
+● ☐ Logged-in user “My Builds” dashboard 
+● ☐ Duplicate / rename / delete builds 
+6. PDF & Quote Generation 
+● ☐ One-page A4 PDF export 
+● ☐ White background, brand-clean layout 
+● ☐ 1–3 rendered views of vehicle 
+● ☐ Itemized component list with IDs 
+● ☐ Pricing breakdown (subtotal, tax, shipping, total) 
+● ☐ QR / short link back to configur  ation 
+● ☐ Language & currency localized 
+● ☐ Legal disclaimer + contact block 
+ 
+----------------Page (12) Break----------------
+ 
+7. “Coming Soon” & Pre-Order Logic 
+● ☐ Component availability states: 
+■ ☐ Available 
+■ ☐ Pre-order 
+■ ☐ Deposit 
+■ ☐ Notify-me 
+■ ☐ View-only 
+● ☐ Visual status indicators in configur   ator 
+● ☐ CTA surfaced correctly (Shopify fulfillment handled externally)   
+8. Localization & Units 
+● ☐ Languages: English, French, Spanish 
+● ☐ Currency auto-sync with Shopify 
+● ☐ Metric / Imperial unit toggle 
+● ☐ Product content sourced from Shopify Translations 
+● ☐ UI strings via translation keys / files  
+9. Admin & Content Management 
+● ☐ Lightweight admin / back office            
+● ☐ CSV imports for: 
+■ ☐ Options & variants 
+■ ☐ Pricing deltas 
+■ ☐ Rules matrix 
+■ ☐ Availability status 
+● ☐ Asset upload per component / preset 
+● ☐ Flags for preorder / deposit / notify states 
+● ☐ Documentation & training materials 
+● ☐ Documentation & training materials 
+●  
+10. 3D Asset Pipeline 
+ 
+----------------Page (13) Break----------------
+ 
+● ☐ STEP → optimized runtime conversion 
+● ☐ Decimation, UVs, PBR materials 
+● ☐ LODs for large assemblies 
+● ☐ Consistent naming & directory standards 
+● ☐ Asset budget enforcement (size, textures) 
+● ☐ Brand-aligned HDRI environments 
+11. Performance & Device Support 
+● ☐ Initial 3D payload ≤ 8–12 MB 
+● ☐ Lazy-loading of assemblies 
+● ☐ ≤ 4s time-to-first-interaction (mid-range mobile) 
+● ☐ ≥ 30 FPS mobile, ≥ 60 FPS desktop 
+● ☐ Automatic fallback for low-end devices 
+● ☐ Static / 360 fallback as last resort 
+12. Analytics & Tracking 
+● ☐ GA4 integration 
+● ☐ Event tracking: 
+■ ☐ Step navigation 
+■ ☐ Option selections 
+■ ☐ Rule conflicts    
+■ ☐ Save / share 
+■ ☐ Add-to-cart 
+■ ☐ PDF downloads 
+● ☐ Dashboard for: 
+■ ☐ Engagement 
+■ ☐ Option popularity 
+■ ☐ Funnel drop-off 
+13. Security, Privacy & Compliance 
+● ☐ NDA handling for CAD assets 
+● ☐ Secure storage of saved builds 
+● ☐ Email consent capture 
+ 
+----------------Page (14) Break----------------
+ 
+● ☐ 12-month data retention 
+● ☐ GDPR-aligned deletion on request 
+● ☐ Cookie & consent banner compatibility 
+14. Environments, QA & Launch Readiness 
+● ☐ Dev / Staging / Production environments 
+● ☐ Feature flags for phased rollout 
+● ☐ Device & browser QA coverage 
+● ☐ Rules validation testing 
+● ☐ Localization & currency QA 
+● ☐ Performance acceptance tests 
+● ☐ UAT & formal sign-off workflow           
+15. Architecture & Maintainability 
+● ☐ Open-source or industry-standard tech stack 
+● ☐ No vendor lock-in 
+● ☐ Self-hostable or transferable ownership 
+● ☐ Maintainable by third-party developers 
+● ☐ Clear exit strategy documented 
+ 
+ 
+ 
+----------------Page (15) Break----------------
