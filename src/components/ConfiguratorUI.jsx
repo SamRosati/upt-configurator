@@ -40,16 +40,9 @@ const ConfiguratorUI = () => {
 
     const [activeTab, setActiveTab] = useState('build'); // 'preset' | 'build'
     const [searchQuery, setSearchQuery] = useState('');
-    const [expandedLevels, setExpandedLevels] = useState(new Set(ORDERED_LEVELS));
+    const [currentStep, setCurrentStep] = useState(0);
 
     const progress = getBuildProgress();
-
-    const toggleLevel = (level) => {
-        const next = new Set(expandedLevels);
-        if (next.has(level)) next.delete(level);
-        else next.add(level);
-        setExpandedLevels(next);
-    };
 
     const filteredParts = useMemo(() => {
         if (!searchQuery) return matrix.parts;
@@ -61,46 +54,55 @@ const ConfiguratorUI = () => {
         );
     }, [matrix.parts, searchQuery]);
 
-    const renderedLevels = ORDERED_LEVELS.map(levelName => {
-        // Find categories belonging to this level
-        const levelCategories = matrix.categories.filter(c => c.level === levelName);
-        
-        // If no categories mapped to this level, we can skip or show empty
-        if (levelCategories.length === 0) return null;
+    const handleNext = () => {
+        if (currentStep < ORDERED_LEVELS.length - 1) {
+            setCurrentStep(currentStep + 1);
+        }
+    };
 
-        const isExpanded = expandedLevels.has(levelName);
-        
-        // Check if any category in this level has a selection
-        const hasAnySelection = levelCategories.some(cat => {
-            const isMulti = cat.type === 'multi';
-            const selected = isMulti ? toArray(selectedParts[cat.id]) : selectedParts[cat.id];
-            return isMulti ? selected.length > 0 : !!selected;
-        });
+    const handleBack = () => {
+        if (currentStep > 0) {
+            setCurrentStep(currentStep - 1);
+        }
+    };
 
-        return (
-            <div key={levelName} className={`category-section ${isExpanded ? 'expanded' : ''}`}>
-                <div className="category-header" onClick={() => toggleLevel(levelName)}>
+    const currentLevelName = ORDERED_LEVELS[currentStep];
+    const levelCategories = matrix.categories.filter(c => c.level === currentLevelName);
+    
+    // Check if current level has a selection
+    const hasAnySelection = levelCategories.some(cat => {
+        const isMulti = cat.type === 'multi';
+        const selected = isMulti ? toArray(selectedParts[cat.id]) : selectedParts[cat.id];
+        return isMulti ? selected.length > 0 : !!selected;
+    });
+
+    const renderedStep = (
+        <div key={currentLevelName} className="journey-step">
+            <div className="step-indicator">
+                STEP {currentStep + 1} OF {ORDERED_LEVELS.length}
+            </div>
+            <div className="category-section expanded">
+                <div className="category-header no-click">
                     <div className="category-title">
                         <span className={`dot ${hasAnySelection ? 'filled' : ''}`}></span>
-                        {levelName.toUpperCase()}
+                        {currentLevelName.toUpperCase()}
                         {levelCategories.some(c => c.required) && <span className="badge-required">REQUIRED</span>}
                     </div>
-                    <span className="caret">{isExpanded ? '▲' : '▼'}</span>
                 </div>
                 
-                {isExpanded && (
-                    <div className="options-list">
-                        {levelCategories.map(category => {
-                            const catId = category.id;
-                            const parts = getAvailableParts(catId, matrix).filter(p => 
-                                filteredParts.some(fp => fp.id === p.id)
-                            );
+                <div className="options-list">
+                    {levelCategories.map(category => {
+                        const catId = category.id;
+                        const parts = getAvailableParts(catId, matrix).filter(p => 
+                            filteredParts.some(fp => fp.id === p.id)
+                        );
 
-                            const isMulti = category.type === 'multi';
-                            const selected = isMulti ? toArray(selectedParts[catId]) : selectedParts[catId];
+                        const isMulti = category.type === 'multi';
+                        const selected = isMulti ? toArray(selectedParts[catId]) : selectedParts[catId];
 
-                            return (
-                                <div key={catId} className="category-group">
+                        return (
+                            <div key={catId} className="category-group">
+                                {levelCategories.length > 1 && (
                                     <div className="category-label" style={{ 
                                         fontSize: '0.65rem', 
                                         fontWeight: '800', 
@@ -110,41 +112,58 @@ const ConfiguratorUI = () => {
                                     }}>
                                         {category.name}
                                     </div>
-                                    {parts.map(part => {
-                                        const isSelected = isMulti 
-                                            ? selected.includes(part.id) 
-                                            : selected === part.id;
-                                        
-                                        return (
-                                            <div 
-                                                key={part.id} 
-                                                className={`part-option ${isSelected ? 'active' : ''}`}
-                                                onClick={() => selectPart(catId, part.id)}
-                                            >
-                                                <div className="checkbox-wrapper">
-                                                    <div className={`checkbox ${isSelected ? 'checked' : ''}`}>
-                                                        {isSelected && '✓'}
-                                                    </div>
-                                                </div>
-                                                <div className="part-info">
-                                                    <div className="part-name">{part.name}</div>
-                                                    <div className="part-desc">{part.description}</div>
-                                                </div>
-                                                <div className="part-price">
-                                                    {part.price > 0 ? `$${part.price.toLocaleString()}` : 'INCL.'}
+                                )}
+                                {parts.map(part => {
+                                    const isSelected = isMulti 
+                                        ? selected.includes(part.id) 
+                                        : selected === part.id;
+                                    
+                                    return (
+                                        <div 
+                                            key={part.id} 
+                                            className={`part-option ${isSelected ? 'active' : ''}`}
+                                            onClick={() => selectPart(catId, part.id)}
+                                        >
+                                            <div className="checkbox-wrapper">
+                                                <div className={`checkbox ${isSelected ? 'checked' : ''}`}>
+                                                    {isSelected && '✓'}
                                                 </div>
                                             </div>
-                                        );
-                                    })}
-                                    {parts.length === 0 && <div className="no-parts" style={{ padding: '8px 12px', fontSize: '0.7rem', color: '#999' }}>No parts available</div>}
-                                </div>
-                            );
-                        })}
-                    </div>
-                )}
+                                            <div className="part-info">
+                                                <div className="part-name">{part.name}</div>
+                                                <div className="part-desc">{part.description}</div>
+                                            </div>
+                                            <div className="part-price">
+                                                {part.price > 0 ? `$${part.price.toLocaleString()}` : 'INCL.'}
+                                            </div>
+                                        </div>
+                                    );
+                                })}
+                                {parts.length === 0 && <div className="no-parts" style={{ padding: '8px 12px', fontSize: '0.7rem', color: '#999' }}>No parts available</div>}
+                            </div>
+                        );
+                    })}
+                </div>
             </div>
-        );
-    });
+
+            <div className="journey-navigation">
+                <button 
+                    className="nav-btn back" 
+                    onClick={handleBack}
+                    disabled={currentStep === 0}
+                >
+                    BACK
+                </button>
+                <button 
+                    className="nav-btn next" 
+                    onClick={handleNext}
+                    disabled={currentStep === ORDERED_LEVELS.length - 1}
+                >
+                    CONTINUE
+                </button>
+            </div>
+        </div>
+    );
 
     const totalPrice = useMemo(() => {
         let total = 0;
@@ -243,7 +262,7 @@ const ConfiguratorUI = () => {
                     </div>
                 ) : (
                     <div className="build-view">
-                        {renderedLevels}
+                        {renderedStep}
                     </div>
                 )}
             </div>
