@@ -22,7 +22,9 @@ const AdminPage = () => {
         }
     };
 
-    const [manualToken, setManualToken] = useState('');
+    const [manualToken, setManualToken] = useState(() => {
+        return localStorage.getItem('UPT_ADMIN_TOKEN') || '';
+    });
 
     const fetchData = async (overrideToken = null) => {
         setLoading(true);

@@ -6,10 +6,15 @@
 const OWNER = import.meta.env.VITE_GITHUB_OWNER || 'SamRosati';
 const REPO = import.meta.env.VITE_GITHUB_REPO || 'upt-configurator';
 const BRANCH = import.meta.env.VITE_GITHUB_BRANCH || 'main';
-let TOKEN = import.meta.env.VITE_GITHUB_TOKEN;
+const BASE_URL = `https://api.github.com/repos/${OWNER}/${REPO}`;
+const SAVED_TOKEN = typeof window !== 'undefined' ? localStorage.getItem('UPT_ADMIN_TOKEN') : null;
+let TOKEN = import.meta.env.VITE_GITHUB_TOKEN || SAVED_TOKEN;
 
 export const setToken = (t) => {
     TOKEN = t;
+    if (typeof window !== 'undefined' && t) {
+        localStorage.setItem('UPT_ADMIN_TOKEN', t);
+    }
 };
 
 const getHeaders = () => {
