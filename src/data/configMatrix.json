@@ -302,6 +302,23 @@
           "body-rearbumper"
         ]
       }
+    },
+    {
+      "name": "Essential",
+      "description": "Basic configuration",
+      "parts": {
+        "Block": "block-single",
+        "Wheelbase": "wb-1330",
+        "Tire": "tire-offroad-1330",
+        "Motor": "motor-a-1330",
+        "Control": [
+          "control-column",
+          "control-handlebar"
+        ],
+        "Seat": "seat-leaning",
+        "Wheels": "wheels-urban",
+        "Body": "body-fenders"
+      }
     }
   ]
 }

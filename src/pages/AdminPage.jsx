@@ -8,6 +8,7 @@ const AdminPage = () => {
     const [loading, setLoading] = useState(false);
     const [excelData, setExcelData] = useState(null);
     const [parts, setParts] = useState([]);
+    const [presets, setPresets] = useState([]);
     const [status, setStatus] = useState('');
 
     const handleLogin = (e) => {
@@ -38,11 +39,14 @@ const AdminPage = () => {
             
             const partsSheet = workbook.Sheets['Parts'];
             if (!partsSheet) throw new Error('Could not find "Parts" sheet in Excel file.');
-            
             const rawParts = xlsx.utils.sheet_to_json(partsSheet, { defval: "" });
+            
+            const presetsSheet = workbook.Sheets['Presets'];
+            const rawPresets = presetsSheet ? xlsx.utils.sheet_to_json(presetsSheet, { defval: "" }) : [];
             
             setExcelData({ sha, workbook });
             setParts(rawParts);
+            setPresets(rawPresets);
             setStatus('Ready');
         } catch (err) {
             console.error(err);
@@ -58,16 +62,27 @@ const AdminPage = () => {
         setParts(newParts);
     };
 
+    const handleUpdatePreset = (index, field, value) => {
+        const newPresets = [...presets];
+        newPresets[index][field] = value;
+        setPresets(newPresets);
+    };
+
     const handleSave = async () => {
         if (!excelData) return;
         setLoading(true);
         setStatus('Saving changes to GitHub and triggering production build...');
         
         try {
-            // Update the Parts sheet in the existing workbook
-            const newSheet = xlsx.utils.json_to_sheet(parts);
             const { workbook, sha } = excelData;
-            workbook.Sheets['Parts'] = newSheet;
+            
+            // Update the Parts sheet
+            const partsSheet = xlsx.utils.json_to_sheet(parts);
+            workbook.Sheets['Parts'] = partsSheet;
+            
+            // Update the Presets sheet
+            const presetsSheet = xlsx.utils.json_to_sheet(presets);
+            workbook.Sheets['Presets'] = presetsSheet;
             
             // Generate new base64 content
             const wbout = xlsx.write(workbook, { bookType: 'xlsx', type: 'base64' });
@@ -75,7 +90,7 @@ const AdminPage = () => {
             await github.updateFile(
                 'Configurator_Data.xlsx',
                 wbout,
-                `Admin update: Configurator Data (Parts updated)`,
+                `Admin update: Configurator Data (Parts and Presets updated)`,
                 sha
             );
             
@@ -151,12 +166,12 @@ const AdminPage = () => {
                 </div>
             )}
 
-            <section className="parts-manager">
+            <section className="parts-manager" style={{ marginBottom: '40px' }}>
                 <h3>Parts Management</h3>
-                <div style={{ overflowX: 'auto' }}>
+                <div style={{ overflowX: 'auto', maxHeight: '400px', border: '1px solid #e5e7eb', borderRadius: '4px' }}>
                     <table style={{ width: '100%', borderCollapse: 'collapse' }}>
-                        <thead>
-                            <tr style={{ background: '#f9fafb', borderBottom: '1px solid #e5e7eb' }}>
+                        <thead style={{ position: 'sticky', top: 0, background: '#f9fafb', zIndex: 1 }}>
+                            <tr style={{ borderBottom: '1px solid #e5e7eb' }}>
                                 <th style={{ padding: '12px', textAlign: 'left' }}>Part ID</th>
                                 <th style={{ padding: '12px', textAlign: 'left' }}>Display Name</th>
                                 <th style={{ padding: '12px', textAlign: 'left' }}>Price</th>
@@ -167,34 +182,68 @@ const AdminPage = () => {
                         <tbody>
                             {parts.filter(p => p.Category && !p.Category.includes('(')).map((part, idx) => (
                                 <tr key={idx} style={{ borderBottom: '1px solid #f3f4f6' }}>
-                                    <td style={{ padding: '8px' }}>{part.Part_ID}</td>
+                                    <td style={{ padding: '8px', fontSize: '13px', color: '#666' }}>{part.Part_ID}</td>
                                     <td style={{ padding: '8px' }}>
                                         <input 
                                             value={part.Part_Name} 
-                                            onChange={(e) => handleUpdatePart(idx, 'Part_Name', e.target.value)}
-                                            style={{ padding: '4px', width: '100%' }}
+                                            onChange={(e) => handleUpdatePart(parts.indexOf(part), 'Part_Name', e.target.value)}
+                                            style={{ padding: '6px', width: '100%', border: '1px solid #f3f3f3' }}
                                         />
                                     </td>
                                     <td style={{ padding: '8px' }}>
                                         <input 
                                             value={part.Price} 
-                                            onChange={(e) => handleUpdatePart(idx, 'Price', e.target.value)}
-                                            style={{ padding: '4px', width: '80px' }}
+                                            onChange={(e) => handleUpdatePart(parts.indexOf(part), 'Price', e.target.value)}
+                                            style={{ padding: '6px', width: '80px', border: '1px solid #f3f3f3' }}
                                         />
                                     </td>
                                     <td style={{ padding: '8px' }}>
                                         <input 
                                             value={part.GLB_File} 
-                                            onChange={(e) => handleUpdatePart(idx, 'GLB_File', e.target.value)}
-                                            style={{ padding: '4px', width: '150px' }}
+                                            onChange={(e) => handleUpdatePart(parts.indexOf(part), 'GLB_File', e.target.value)}
+                                            style={{ padding: '6px', width: '150px', border: '1px solid #f3f3f3' }}
                                         />
                                     </td>
                                     <td style={{ padding: '8px' }}>
                                         <input 
                                             value={part.SKU} 
-                                            onChange={(e) => handleUpdatePart(idx, 'SKU', e.target.value)}
-                                            style={{ padding: '4px', width: '120px' }}
+                                            onChange={(e) => handleUpdatePart(parts.indexOf(part), 'SKU', e.target.value)}
+                                            style={{ padding: '6px', width: '120px', border: '1px solid #f3f3f3' }}
                                         />
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section className="presets-manager">
+                <h3>Presets Management</h3>
+                <div style={{ overflowX: 'auto', border: '1px solid #e5e7eb', borderRadius: '4px' }}>
+                    <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+                        <thead style={{ background: '#f9fafb' }}>
+                            <tr style={{ borderBottom: '1px solid #e5e7eb' }}>
+                                <th style={{ padding: '12px', textAlign: 'left' }}>Preset Name</th>
+                                <th style={{ padding: '12px', textAlign: 'left' }}>Description</th>
+                                <th style={{ padding: '12px', textAlign: 'left' }}>Components</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {presets.filter(p => !p.Preset_Name.includes('(')).map((preset, idx) => (
+                                <tr key={idx} style={{ borderBottom: '1px solid #f3f4f6' }}>
+                                    <td style={{ padding: '8px', fontWeight: 'bold' }}>{preset.Preset_Name}</td>
+                                    <td style={{ padding: '8px' }}>
+                                        <input 
+                                            value={preset.Description} 
+                                            onChange={(e) => handleUpdatePreset(presets.indexOf(preset), 'Description', e.target.value)}
+                                            style={{ padding: '6px', width: '100%', border: '1px solid #f3f3f3' }}
+                                        />
+                                    </td>
+                                    <td style={{ padding: '8px', fontSize: '11px', color: '#666' }}>
+                                        {Object.keys(preset).filter(k => !['Preset_Name', 'Description'].includes(k)).map(k => (
+                                            <div key={k}>{k}: {preset[k]}</div>
+                                        ))}
                                     </td>
                                 </tr>
                             ))}
