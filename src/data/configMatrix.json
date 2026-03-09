@@ -86,17 +86,6 @@
       "description": "Single width chassis block"
     },
     {
-      "id": "wb-1130",
-      "name": "Short Wheelbase 1130",
-      "category": "Wheelbase",
-      "glb": "wb.glb",
-      "node": "WB_1130",
-      "sku": "WB-1130",
-      "price": 0,
-      "status": "available",
-      "description": "short wheelbase"
-    },
-    {
       "id": "wb-1330",
       "name": "Long Wheelbase 1330",
       "category": "Wheelbase",
