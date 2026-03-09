@@ -97,6 +97,17 @@
       "description": "long wheelbase "
     },
     {
+      "id": "motor-a-1130",
+      "name": "Motor A 1130",
+      "category": "Motor",
+      "glb": "motor.glb",
+      "node": "Motor_A_1130",
+      "sku": "MOT-A-1130",
+      "price": 899,
+      "status": "available",
+      "description": "Motor Type A for Short wheelbase"
+    },
+    {
       "id": "motor-a-1330",
       "name": "Motor A 1330",
       "category": "Motor",
@@ -105,7 +116,18 @@
       "sku": "MOT-A-1330",
       "price": 999,
       "status": "available",
-      "description": "Motor Type A For short wheelbase"
+      "description": "Motor Type A For long wheelbase"
+    },
+    {
+      "id": "tire-offroad-1130",
+      "name": "Offroad Tires 1130",
+      "category": "Tire",
+      "glb": "tire.glb",
+      "node": "Tire_Offroad_1130",
+      "sku": "TIRE-OFF-1130",
+      "price": 499,
+      "status": "available",
+      "description": "All-terrain tires for Short wheelbase"
     },
     {
       "id": "tire-offroad-1330",
@@ -221,15 +243,33 @@
       "message": ""
     },
     {
+      "ifPart": "wb-1130",
+      "relation": "REQUIRES",
+      "thenPart": "block-single",
+      "message": ""
+    },
+    {
       "ifPart": "motor-a-1330",
       "relation": "REQUIRES",
       "thenPart": "wb-1330",
       "message": ""
     },
     {
+      "ifPart": "motor-a-1130",
+      "relation": "REQUIRES",
+      "thenPart": "wb-1130",
+      "message": ""
+    },
+    {
       "ifPart": "tire-offroad-1330",
       "relation": "REQUIRES",
       "thenPart": "motor-a-1330",
+      "message": ""
+    },
+    {
+      "ifPart": "tire-offroad-1130",
+      "relation": "REQUIRES",
+      "thenPart": "motor-a-1130",
       "message": ""
     },
     {

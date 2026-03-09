@@ -71,7 +71,10 @@ const ConfiguratorUI = () => {
     // Check if current level has a selection
     const hasAnySelection = levelCategories.some(cat => {
         const selected = selectedParts[cat.id];
-        return toArray(selected).length > 0;
+        const available = getAvailableParts(cat.id, matrix, selectedParts);
+        const selectedArr = toArray(selected);
+        // Only count as selected if the selected item is actually available
+        return selectedArr.some(id => available.some(p => p.id === id));
     });
 
     const renderedStep = (
@@ -91,7 +94,7 @@ const ConfiguratorUI = () => {
                 <div className="options-list">
                     {levelCategories.map(category => {
                         const catId = category.id;
-                        const parts = getAvailableParts(catId, matrix).filter(p => 
+                        const parts = getAvailableParts(catId, matrix, selectedParts).filter(p => 
                             filteredParts.some(fp => fp.id === p.id)
                         );
 
