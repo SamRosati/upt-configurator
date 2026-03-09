@@ -3,6 +3,7 @@
     {
       "id": "Block",
       "name": "Chassis",
+      "level": "Main Block",
       "type": "single",
       "required": true,
       "icon": "chassis"
@@ -10,6 +11,7 @@
     {
       "id": "Wheelbase",
       "name": "Wheelbase",
+      "level": "Wheelbase",
       "type": "single",
       "required": true,
       "icon": "wheelbase"
@@ -17,6 +19,7 @@
     {
       "id": "Motor",
       "name": "Electric Motor",
+      "level": "Motor",
       "type": "single",
       "required": true,
       "icon": "motor"
@@ -24,6 +27,7 @@
     {
       "id": "Tire",
       "name": "Wheels & Tires",
+      "level": "Tires",
       "type": "single",
       "required": true,
       "icon": "tire"
@@ -31,6 +35,7 @@
     {
       "id": "Control",
       "name": "Steering Control",
+      "level": "Steering & Controls",
       "type": "single",
       "required": true,
       "icon": "control"
@@ -38,6 +43,7 @@
     {
       "id": "Seat",
       "name": "Seating",
+      "level": "Seating",
       "type": "single",
       "required": true,
       "icon": "seat"
@@ -45,6 +51,7 @@
     {
       "id": "Body",
       "name": "Body Parts",
+      "level": "Body Parts",
       "type": "multi",
       "required": false,
       "icon": "body"
@@ -52,6 +59,7 @@
     {
       "id": "Accessories",
       "name": "Accessories",
+      "level": "Accessories",
       "type": "multi",
       "required": false,
       "icon": "accessories"
@@ -59,6 +67,7 @@
     {
       "id": "Color",
       "name": "Color & Finish",
+      "level": "",
       "type": "single",
       "required": false,
       "icon": "palette"
@@ -185,6 +194,17 @@
       "price": 299,
       "status": "available",
       "description": "Multifunctional rear bumper"
+    },
+    {
+      "id": "wb-1130",
+      "name": "Short Wheelbase 1130",
+      "category": "Wheelbase",
+      "glb": "models/parts/placeholder.glb",
+      "node": "",
+      "sku": "SKU-000",
+      "price": 999,
+      "status": "active",
+      "description": ""
     }
   ],
   "rules": [

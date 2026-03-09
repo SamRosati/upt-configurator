@@ -321,24 +321,18 @@ const useConfiguratorStore = create((set, get) => ({
 
     // Selector for Assets
     getAssetsToLoad: () => {
-        const { selectedParts } = get();
+        const { selectedParts, matrix } = get();
         const urls = new Set();
 
-        const categoryHasSelection = (catId) => {
-            const val = selectedParts[catId];
-            if (!val) return false;
-            return Array.isArray(val) ? val.length > 0 : true;
-        };
-
-        const categoryGlbUrl = (catId) => {
-            const part = matrix.parts.find((p) => p.category === catId && p.glb);
-            return part?.glb ? `/models/parts/${part.glb}` : null;
-        };
-
-        matrix.categories.forEach((cat) => {
-            if (!cat.required && !categoryHasSelection(cat.id)) return;
-            const url = categoryGlbUrl(cat.id);
-            if (url) urls.add(url);
+        // Collect GLBs from all currently selected parts
+        Object.entries(selectedParts).forEach(([catId, partIds]) => {
+            const ids = Array.isArray(partIds) ? partIds : [partIds];
+            ids.forEach(id => {
+                const part = matrix.parts.find(p => p.id === id);
+                if (part && part.glb) {
+                    urls.add(`/models/parts/${part.glb}`);
+                }
+            });
         });
 
         return Array.from(urls);

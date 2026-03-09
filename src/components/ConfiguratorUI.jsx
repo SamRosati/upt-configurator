@@ -70,9 +70,8 @@ const ConfiguratorUI = () => {
     
     // Check if current level has a selection
     const hasAnySelection = levelCategories.some(cat => {
-        const isMulti = cat.type === 'multi';
-        const selected = isMulti ? toArray(selectedParts[cat.id]) : selectedParts[cat.id];
-        return isMulti ? (selected && selected.length > 0) : !!selected;
+        const selected = selectedParts[cat.id];
+        return toArray(selected).length > 0;
     });
 
     const renderedStep = (
@@ -113,9 +112,7 @@ const ConfiguratorUI = () => {
                                     </div>
                                 )}
                                 {parts.map(part => {
-                                    const isSelected = isMulti 
-                                        ? selected.includes(part.id) 
-                                        : selected === part.id;
+                                    const isSelected = toArray(selected).includes(part.id);
                                     
                                     return (
                                         <div 
