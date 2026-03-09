@@ -22,15 +22,22 @@ const AdminPage = () => {
         }
     };
 
-    const fetchData = async () => {
+    const [manualToken, setManualToken] = useState('');
+
+    const fetchData = async (overrideToken = null) => {
         setLoading(true);
         setStatus('Fetching latest data from GitHub...');
         
-        // Check for token first
-        if (!import.meta.env.VITE_GITHUB_TOKEN) {
-            setStatus('Error: VITE_GITHUB_TOKEN is missing. Please add it to your Vercel/environment variables.');
+        const tokenToUse = overrideToken || manualToken || import.meta.env.VITE_GITHUB_TOKEN;
+
+        if (!tokenToUse) {
+            setStatus('Error: VITE_GITHUB_TOKEN is missing.');
             setLoading(false);
             return;
+        }
+
+        if (overrideToken || manualToken) {
+            github.setToken(tokenToUse);
         }
 
         try {
@@ -163,6 +170,24 @@ const AdminPage = () => {
                         <li>Add <strong>VITE_GITHUB_TOKEN</strong> with your token as the value.</li>
                         <li><strong>Redeploy</strong> your project for changes to take effect.</li>
                     </ol>
+                    <div style={{ marginTop: '20px', borderTop: '1px solid #fecaca', paddingTop: '20px' }}>
+                        <p><strong>Alternative:</strong> Paste your token here to use it for this session:</p>
+                        <div style={{ display: 'flex', gap: '10px' }}>
+                            <input 
+                                type="password" 
+                                placeholder="Paste GitHub Token" 
+                                value={manualToken}
+                                onChange={(e) => setManualToken(e.target.value)}
+                                style={{ flex: 1, padding: '10px', border: '1px solid #fecaca', borderRadius: '4px' }}
+                            />
+                            <button 
+                                onClick={() => fetchData(manualToken)}
+                                style={{ padding: '10px 20px', background: '#991b1b', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer' }}
+                            >
+                                Try Token
+                            </button>
+                        </div>
+                    </div>
                 </div>
             )}
 

@@ -6,13 +6,15 @@
 const OWNER = import.meta.env.VITE_GITHUB_OWNER || 'SamRosati';
 const REPO = import.meta.env.VITE_GITHUB_REPO || 'upt-configurator';
 const BRANCH = import.meta.env.VITE_GITHUB_BRANCH || 'main';
-const TOKEN = import.meta.env.VITE_GITHUB_TOKEN;
+let TOKEN = import.meta.env.VITE_GITHUB_TOKEN;
 
-const BASE_URL = `https://api.github.com/repos/${OWNER}/${REPO}`;
+export const setToken = (t) => {
+    TOKEN = t;
+};
 
 const getHeaders = () => {
     if (!TOKEN) {
-        throw new Error('VITE_GITHUB_TOKEN is missing. Please add it to your environment variables.');
+        throw new Error('VITE_GITHUB_TOKEN is missing. Please add it to your environment variables or enter it manually below.');
     }
     return {
         'Authorization': `token ${TOKEN}`,
