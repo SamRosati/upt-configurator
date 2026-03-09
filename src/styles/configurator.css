@@ -127,43 +127,6 @@ body,
   color: #fff;
 }
 
-/* Atmosphere */
-.atmosphere-section {
-  margin-bottom: 24px;
-}
-
-.atmosphere-section .label {
-  display: block;
-  font-size: 0.7rem;
-  font-weight: 800;
-  color: #999;
-  margin-bottom: 10px;
-  letter-spacing: 0.5px;
-}
-
-.toggle-group {
-  display: flex;
-  gap: 10px;
-}
-
-.toggle-group button {
-  flex: 1;
-  padding: 8px;
-  border: 1px solid #222;
-  background: #1a1a1a;
-  color: #888;
-  border-radius: 6px;
-  font-size: 0.8rem;
-  font-weight: 600;
-  cursor: pointer;
-}
-
-.toggle-group button.active {
-  background: #2b6cb0;
-  color: white;
-  border-color: #2b6cb0;
-}
-
 /* Content Area */
 .content-scroll {
   flex: 1;

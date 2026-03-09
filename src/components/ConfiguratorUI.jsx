@@ -4,15 +4,15 @@ import { getAvailableParts } from '../utils/rulesEngine';
 
 const toArray = (val) => (Array.isArray(val) ? val : val ? [val] : []);
 
-const CATEGORY_MAPPING = {
-    'Block': 'CHASSIS',
-    'Wheelbase': 'WHEELBASE',
-    'Motor': 'MOTOR',
-    'Tire': 'TIRES',
-    'Control': 'STEERING & CONTROLS',
-    'Seat': 'SEATING',
-    'Body': 'BODY PARTS',
-    'Accessories': 'ACCESSORIES'
+const LEVEL_TO_CATEGORIES = {
+    'Main Block': ['Block'],
+    'Wheelbase': ['Wheelbase'],
+    'Motor': ['Motor'],
+    'Tires': ['Tire'],
+    'Steering & Controls': ['Control'],
+    'Seating': ['Seat'],
+    'Body Parts': ['Body'],
+    'Accessories': ['Accessories']
 };
 
 const ORDERED_LEVELS = [
@@ -33,8 +33,6 @@ const ConfiguratorUI = () => {
         selectPart, 
         loadPreset, 
         currentPreset,
-        atmosphere,
-        setAtmosphere,
         getBuildProgress
     } = useConfiguratorStore();
 
@@ -67,13 +65,14 @@ const ConfiguratorUI = () => {
     };
 
     const currentLevelName = ORDERED_LEVELS[currentStep];
-    const levelCategories = matrix.categories.filter(c => c.level === currentLevelName);
+    const categoryIds = LEVEL_TO_CATEGORIES[currentLevelName] || [];
+    const levelCategories = matrix.categories.filter(c => categoryIds.includes(c.id));
     
     // Check if current level has a selection
     const hasAnySelection = levelCategories.some(cat => {
         const isMulti = cat.type === 'multi';
         const selected = isMulti ? toArray(selectedParts[cat.id]) : selectedParts[cat.id];
-        return isMulti ? selected.length > 0 : !!selected;
+        return isMulti ? (selected && selected.length > 0) : !!selected;
     });
 
     const renderedStep = (
@@ -225,23 +224,6 @@ const ConfiguratorUI = () => {
                 />
             </div>
 
-            <div className="atmosphere-section">
-                <span className="label">ATMOSPHERE</span>
-                <div className="toggle-group">
-                    <button 
-                        className={atmosphere === 'studio' ? 'active' : ''} 
-                        onClick={() => setAtmosphere('studio')}
-                    >Studio</button>
-                    <button 
-                        className={atmosphere === 'indoor' ? 'active' : ''} 
-                        onClick={() => setAtmosphere('indoor')}
-                    >Indoor</button>
-                    <button 
-                        className={atmosphere === 'outdoor' ? 'active' : ''} 
-                        onClick={() => setAtmosphere('outdoor')}
-                    >Outdoor</button>
-                </div>
-            </div>
 
             <div className="content-scroll">
                 {activeTab === 'preset' ? (

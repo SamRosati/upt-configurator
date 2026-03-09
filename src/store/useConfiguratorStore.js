@@ -219,9 +219,6 @@ const useConfiguratorStore = create((set, get) => ({
     matrix: matrix,
     selectedParts: initialSelectedParts,
     currentPreset: null,
-    atmosphere: 'studio', // 'studio' | 'indoor' | 'outdoor'
-
-    setAtmosphere: (env) => set({ atmosphere: env }),
 
     selectPart: (category, partId) => {
         set((state) => {
