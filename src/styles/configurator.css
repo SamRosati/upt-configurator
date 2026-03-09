@@ -361,3 +361,76 @@ body,
   opacity: 0.3;
   cursor: not-allowed;
 }
+/* Preset View Styles */
+.presets-view {
+  padding: 8px 0;
+}
+
+.presets-view h3 {
+  font-size: 0.7rem;
+  font-weight: 800;
+  color: #666;
+  margin-bottom: 16px;
+  letter-spacing: 1px;
+}
+
+.presets-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.preset-card {
+  background: #1a1a1a;
+  border: 1px solid #222;
+  border-radius: 12px;
+  padding: 16px;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.preset-card:hover {
+  background: #222;
+  border-color: #333;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.preset-card.active {
+  background: rgba(43, 108, 176, 0.1);
+  border-color: #2b6cb0;
+  box-shadow: 0 0 0 1px #2b6cb0;
+}
+
+.preset-card.active::after {
+  content: '✓';
+  position: absolute;
+  top: 12px;
+  right: 16px;
+  color: #2b6cb0;
+  font-weight: 800;
+  font-size: 0.9rem;
+}
+
+.preset-name {
+  font-size: 0.9rem;
+  font-weight: 800;
+  color: #fff;
+  margin-bottom: 4px;
+}
+
+.preset-desc {
+  font-size: 0.75rem;
+  color: #888;
+  line-height: 1.4;
+}
+
+.preset-card.active .preset-name {
+  color: #fff;
+}
+
+.preset-card.active .preset-desc {
+  color: #aaa;
+}
