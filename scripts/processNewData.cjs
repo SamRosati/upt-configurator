@@ -41,7 +41,7 @@ const processData = () => {
         id: part.Part_ID,
         name: String(part.Part_Name),
         category: part.Category,
-        glb: part.GLB_File,
+        glb: part.GLB_File ? path.basename(part.GLB_File) : "",
         node: part.Node_Name,
         sku: String(part.SKU),
         price: (part.Price === 'XXXX' || part.Price === 'XXX' || !part.Price) ? 0 : parseFloat(part.Price),

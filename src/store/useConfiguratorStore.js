@@ -330,7 +330,8 @@ const useConfiguratorStore = create((set, get) => ({
             ids.forEach(id => {
                 const part = matrix.parts.find(p => p.id === id);
                 if (part && part.glb) {
-                    urls.add(`/models/parts/${part.glb}`);
+                    const filename = part.glb.split(/[/\\]/).pop();
+                    urls.add(`/models/parts/${filename}`);
                 }
             });
         });

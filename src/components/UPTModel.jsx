@@ -70,7 +70,8 @@ const UPTModel = () => {
             ids.forEach(id => {
                 const part = matrix.parts.find(p => p.id === id);
                 if (part && part.glb) {
-                    const url = `/models/parts/${part.glb}`;
+                    const filename = part.glb.split(/[/\\]/).pop();
+                    const url = `/models/parts/${filename}`;
                     if (!mapping[url]) mapping[url] = new Set();
                     mapping[url].add(part.node);
                 }
