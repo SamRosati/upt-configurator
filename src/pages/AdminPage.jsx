@@ -13,7 +13,6 @@ const AdminPage = () => {
 
     const handleLogin = (e) => {
         e.preventDefault();
-        // Simple client-side check for demo; should be VITE_ADMIN_SECRET in production
         if (password === 'envo2026') {
             setIsLoggedIn(true);
             fetchData();
@@ -77,6 +76,23 @@ const AdminPage = () => {
         setPresets(newPresets);
     };
 
+    const handleDeletePreset = (index) => {
+        if (!window.confirm('Are you sure you want to delete this preset?')) return;
+        const newPresets = [...presets];
+        newPresets.splice(index, 1);
+        setPresets(newPresets);
+    };
+
+    const handleCreatePreset = () => {
+        const name = window.prompt('Enter new preset name:');
+        if (!name) return;
+        const newPreset = { Preset_Name: name, Description: 'New preset description' };
+        setPresets([...presets, newPreset]);
+    };
+
+    // Helper to get unique categories
+    const categories = [...new Set(parts.map(p => p.Category).filter(c => c && !c.includes('(')))];
+
     const handleSave = async () => {
         if (!excelData) return;
         setLoading(true);
@@ -85,12 +101,23 @@ const AdminPage = () => {
         try {
             const { workbook, sha } = excelData;
             
+            // Clean up data before saving
+            const cleanParts = parts.map(p => {
+                const { ...rest } = p;
+                return rest;
+            });
+
+            const cleanPresets = presets.map(p => {
+                const { ...rest } = p;
+                return rest;
+            });
+
             // Update the Parts sheet
-            const partsSheet = xlsx.utils.json_to_sheet(parts);
+            const partsSheet = xlsx.utils.json_to_sheet(cleanParts);
             workbook.Sheets['Parts'] = partsSheet;
             
             // Update the Presets sheet
-            const presetsSheet = xlsx.utils.json_to_sheet(presets);
+            const presetsSheet = xlsx.utils.json_to_sheet(cleanPresets);
             workbook.Sheets['Presets'] = presetsSheet;
             
             // Generate new base64 content
@@ -194,7 +221,9 @@ const AdminPage = () => {
             )}
 
             <section className="parts-manager" style={{ marginBottom: '40px' }}>
-                <h3>Parts Management</h3>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
+                    <h3 style={{ margin: 0 }}>Parts Management</h3>
+                </div>
                 <div style={{ overflowX: 'auto', maxHeight: '400px', border: '1px solid #e5e7eb', borderRadius: '4px' }}>
                     <table style={{ width: '100%', borderCollapse: 'collapse' }}>
                         <thead style={{ position: 'sticky', top: 0, background: '#f9fafb', zIndex: 1 }}>
@@ -246,7 +275,15 @@ const AdminPage = () => {
             </section>
 
             <section className="presets-manager">
-                <h3>Presets Management</h3>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
+                    <h3 style={{ margin: 0 }}>Presets Management</h3>
+                    <button 
+                        onClick={handleCreatePreset}
+                        style={{ padding: '6px 12px', background: '#2563eb', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer', fontSize: '13px' }}
+                    >
+                        + Add Preset
+                    </button>
+                </div>
                 <div style={{ overflowX: 'auto', border: '1px solid #e5e7eb', borderRadius: '4px' }}>
                     <table style={{ width: '100%', borderCollapse: 'collapse' }}>
                         <thead style={{ background: '#f9fafb' }}>
@@ -254,10 +291,11 @@ const AdminPage = () => {
                                 <th style={{ padding: '12px', textAlign: 'left' }}>Preset Name</th>
                                 <th style={{ padding: '12px', textAlign: 'left' }}>Description</th>
                                 <th style={{ padding: '12px', textAlign: 'left' }}>Components</th>
+                                <th style={{ padding: '12px', textAlign: 'left' }}>Actions</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {presets.filter(p => !p.Preset_Name.includes('(')).map((preset, idx) => (
+                            {presets.filter(p => p.Preset_Name && !p.Preset_Name.includes('(')).map((preset, idx) => (
                                 <tr key={idx} style={{ borderBottom: '1px solid #f3f4f6' }}>
                                     <td style={{ padding: '8px', fontWeight: 'bold' }}>{preset.Preset_Name}</td>
                                     <td style={{ padding: '8px' }}>
@@ -267,10 +305,32 @@ const AdminPage = () => {
                                             style={{ padding: '6px', width: '100%', border: '1px solid #f3f3f3' }}
                                         />
                                     </td>
-                                    <td style={{ padding: '8px', fontSize: '11px', color: '#666' }}>
-                                        {Object.keys(preset).filter(k => !['Preset_Name', 'Description'].includes(k)).map(k => (
-                                            <div key={k}>{k}: {preset[k]}</div>
-                                        ))}
+                                    <td style={{ padding: '8px' }}>
+                                        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '4px', fontSize: '11px' }}>
+                                            {categories.map(cat => (
+                                                <div key={cat} style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
+                                                    <label style={{ fontWeight: '600', color: '#666' }}>{cat}</label>
+                                                    <select 
+                                                        value={preset[cat] || ''}
+                                                        onChange={(e) => handleUpdatePreset(presets.indexOf(preset), cat, e.target.value)}
+                                                        style={{ padding: '4px', fontSize: '11px', border: '1px solid #ddd' }}
+                                                    >
+                                                        <option value="">None</option>
+                                                        {parts.filter(p => p.Category === cat).map(p => (
+                                                            <option key={p.Part_ID} value={p.Part_ID}>{p.Part_Name}</option>
+                                                        ))}
+                                                    </select>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </td>
+                                    <td style={{ padding: '8px' }}>
+                                        <button 
+                                            onClick={() => handleDeletePreset(presets.indexOf(preset))}
+                                            style={{ padding: '6px', background: 'transparent', color: '#dc2626', border: 'none', cursor: 'pointer', fontSize: '12px' }}
+                                        >
+                                            Delete
+                                        </button>
                                     </td>
                                 </tr>
                             ))}
