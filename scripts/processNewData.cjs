@@ -31,6 +31,7 @@ const processData = () => {
     const categories = filterHeaderDesc(rawCategories).map(cat => ({
         id: cat.Category,
         name: cat.Display_Name,
+        level: cat.Level,
         type: cat.Selection_Type,
         priority: parseInt(cat.Load_Priority),
         required: cat.Required && String(cat.Required).toLowerCase() === 'yes',

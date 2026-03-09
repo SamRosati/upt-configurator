@@ -219,6 +219,9 @@ const useConfiguratorStore = create((set, get) => ({
     matrix: matrix,
     selectedParts: initialSelectedParts,
     currentPreset: null,
+    atmosphere: 'studio', // 'studio' | 'indoor' | 'outdoor'
+
+    setAtmosphere: (env) => set({ atmosphere: env }),
 
     selectPart: (category, partId) => {
         set((state) => {
@@ -331,6 +334,21 @@ const useConfiguratorStore = create((set, get) => ({
         });
 
         return Array.from(urls);
+    },
+
+    getBuildProgress: () => {
+        const { matrix, selectedParts } = get();
+        const requiredCategories = matrix.categories.filter(c => c.required);
+        if (requiredCategories.length === 0) return 100;
+        
+        let completedCount = 0;
+        requiredCategories.forEach(cat => {
+            const val = selectedParts[cat.id];
+            const hasValue = Array.isArray(val) ? val.length > 0 : !!val;
+            if (hasValue) completedCount++;
+        });
+        
+        return Math.round((completedCount / requiredCategories.length) * 100);
     }
 }));
 

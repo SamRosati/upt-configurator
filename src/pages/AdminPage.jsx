@@ -2,6 +2,17 @@ import React, { useState, useEffect } from 'react';
 import * as github from '../services/github';
 import * as xlsx from 'xlsx';
 
+const LEVELS = [
+    'Main Block',
+    'Wheelbase',
+    'Motor',
+    'Tires',
+    'Steering & Controls',
+    'Seating',
+    'Body Parts',
+    'Accessories'
+];
+
 const AdminPage = () => {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [password, setPassword] = useState('');
@@ -9,6 +20,7 @@ const AdminPage = () => {
     const [excelData, setExcelData] = useState(null);
     const [parts, setParts] = useState([]);
     const [presets, setPresets] = useState([]);
+    const [categoriesData, setCategoriesData] = useState([]);
     const [status, setStatus] = useState('');
 
     const handleLogin = (e) => {
@@ -51,10 +63,14 @@ const AdminPage = () => {
             
             const presetsSheet = workbook.Sheets['Presets'];
             const rawPresets = presetsSheet ? xlsx.utils.sheet_to_json(presetsSheet, { defval: "" }) : [];
+
+            const categoriesSheet = workbook.Sheets['Categories'];
+            const rawCats = categoriesSheet ? xlsx.utils.sheet_to_json(categoriesSheet, { defval: "" }) : [];
             
             setExcelData({ sha, workbook });
             setParts(rawParts);
             setPresets(rawPresets);
+            setCategoriesData(rawCats);
             setStatus('Ready');
         } catch (err) {
             console.error(err);
@@ -68,6 +84,33 @@ const AdminPage = () => {
         const newParts = [...parts];
         newParts[index][field] = value;
         setParts(newParts);
+    };
+
+    const handleAddPart = () => {
+        const newId = `part-${Date.now()}`;
+        const newPart = {
+            Part_ID: newId,
+            Part_Name: 'New Part',
+            Category: categoriesData[0]?.Category || 'Accessories',
+            Price: 0,
+            GLB_File: 'models/parts/placeholder.glb',
+            SKU: 'SKU-000',
+            Status: 'active'
+        };
+        setParts([...parts, newPart]);
+    };
+
+    const handleDeletePart = (index) => {
+        if (!window.confirm('Delete this part?')) return;
+        const newParts = [...parts];
+        newParts.splice(index, 1);
+        setParts(newParts);
+    };
+
+    const handleUpdateCategory = (index, field, value) => {
+        const newCats = [...categoriesData];
+        newCats[index][field] = value;
+        setCategoriesData(newCats);
     };
 
     const handleUpdatePreset = (index, field, value) => {
@@ -90,8 +133,9 @@ const AdminPage = () => {
         setPresets([...presets, newPreset]);
     };
 
-    // Helper to get unique categories
-    const categories = [...new Set(parts.map(p => p.Category).filter(c => c && !c.includes('(')))];
+    const categories = categoriesData
+        .filter(c => c.Category && !c.Category.includes('('))
+        .map(c => c.Category);
 
     const handleSave = async () => {
         if (!excelData) return;
@@ -102,36 +146,25 @@ const AdminPage = () => {
             const { workbook, sha } = excelData;
             
             // Clean up data before saving
-            const cleanParts = parts.map(p => {
-                const { ...rest } = p;
-                return rest;
-            });
+            const cleanParts = parts.filter(p => !p.Part_ID.includes('('));
+            const cleanPresets = presets.filter(p => !p.Preset_Name.includes('('));
+            const cleanCats = categoriesData.filter(c => !c.Category.includes('('));
 
-            const cleanPresets = presets.map(p => {
-                const { ...rest } = p;
-                return rest;
-            });
-
-            // Update the Parts sheet
-            const partsSheet = xlsx.utils.json_to_sheet(cleanParts);
-            workbook.Sheets['Parts'] = partsSheet;
+            // Update sheets
+            workbook.Sheets['Parts'] = xlsx.utils.json_to_sheet(cleanParts);
+            workbook.Sheets['Presets'] = xlsx.utils.json_to_sheet(cleanPresets);
+            workbook.Sheets['Categories'] = xlsx.utils.json_to_sheet(cleanCats);
             
-            // Update the Presets sheet
-            const presetsSheet = xlsx.utils.json_to_sheet(cleanPresets);
-            workbook.Sheets['Presets'] = presetsSheet;
-            
-            // Generate new base64 content
             const wbout = xlsx.write(workbook, { bookType: 'xlsx', type: 'base64' });
             
             await github.updateFile(
                 'Configurator_Data.xlsx',
                 wbout,
-                `Admin update: Configurator Data (Parts and Presets updated)`,
+                `Admin update: Configurator Data (Parts, Presets, Categories updated)`,
                 sha
             );
             
             setStatus('Successfully saved! Production build triggered.');
-            // Refresh to get new SHA
             fetchData();
         } catch (err) {
             console.error(err);
@@ -190,82 +223,83 @@ const AdminPage = () => {
                 </div>
             </header>
 
+            {/* Token Fallback */}
             {status.includes('VITE_GITHUB_TOKEN') && (
                 <div style={{ padding: '20px', background: '#fef2f2', border: '1px solid #fecaca', borderRadius: '8px', marginBottom: '20px' }}>
                     <h3 style={{ color: '#991b1b', marginTop: 0 }}>Setup Required</h3>
-                    <p>To enable the Admin Dashboard, you need to add a GitHub Personal Access Token to Vercel:</p>
-                    <ol>
-                        <li>Go to <strong>Vercel Dashboard &gt; Settings &gt; Environment Variables</strong></li>
-                        <li>Add <strong>VITE_GITHUB_TOKEN</strong> with your token as the value.</li>
-                        <li><strong>Redeploy</strong> your project for changes to take effect.</li>
-                    </ol>
-                    <div style={{ marginTop: '20px', borderTop: '1px solid #fecaca', paddingTop: '20px' }}>
-                        <p><strong>Alternative:</strong> Paste your token here to use it for this session:</p>
-                        <div style={{ display: 'flex', gap: '10px' }}>
-                            <input 
-                                type="password" 
-                                placeholder="Paste GitHub Token" 
-                                value={manualToken}
-                                onChange={(e) => setManualToken(e.target.value)}
-                                style={{ flex: 1, padding: '10px', border: '1px solid #fecaca', borderRadius: '4px' }}
-                            />
-                            <button 
-                                onClick={() => fetchData(manualToken)}
-                                style={{ padding: '10px 20px', background: '#991b1b', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer' }}
-                            >
-                                Try Token
-                            </button>
-                        </div>
+                    <p>Alternative: Paste your token here to use it for this session:</p>
+                    <div style={{ display: 'flex', gap: '10px' }}>
+                        <input 
+                            type="password" 
+                            placeholder="Paste GitHub Token" 
+                            value={manualToken}
+                            onChange={(e) => setManualToken(e.target.value)}
+                            style={{ flex: 1, padding: '10px', border: '1px solid #fecaca', borderRadius: '4px' }}
+                        />
+                        <button 
+                            onClick={() => fetchData(manualToken)}
+                            style={{ padding: '10px 20px', background: '#991b1b', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer' }}
+                        >
+                            Try Token
+                        </button>
                     </div>
                 </div>
             )}
 
-            <section className="parts-manager" style={{ marginBottom: '40px' }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
-                    <h3 style={{ margin: 0 }}>Parts Management</h3>
-                </div>
-                <div style={{ overflowX: 'auto', maxHeight: '400px', border: '1px solid #e5e7eb', borderRadius: '4px' }}>
+            {/* Category Manager */}
+            <section style={{ marginBottom: '40px' }}>
+                <h3>Category Settings & Level Mapping</h3>
+                <div style={{ overflowX: 'auto', border: '1px solid #e5e7eb', borderRadius: '4px' }}>
                     <table style={{ width: '100%', borderCollapse: 'collapse' }}>
-                        <thead style={{ position: 'sticky', top: 0, background: '#f9fafb', zIndex: 1 }}>
+                        <thead style={{ background: '#f9fafb' }}>
                             <tr style={{ borderBottom: '1px solid #e5e7eb' }}>
-                                <th style={{ padding: '12px', textAlign: 'left' }}>Part ID</th>
+                                <th style={{ padding: '12px', textAlign: 'left' }}>Category ID</th>
                                 <th style={{ padding: '12px', textAlign: 'left' }}>Display Name</th>
-                                <th style={{ padding: '12px', textAlign: 'left' }}>Price</th>
-                                <th style={{ padding: '12px', textAlign: 'left' }}>GLB File</th>
-                                <th style={{ padding: '12px', textAlign: 'left' }}>SKU</th>
+                                <th style={{ padding: '12px', textAlign: 'left' }}>UI Level</th>
+                                <th style={{ padding: '12px', textAlign: 'left' }}>Selection</th>
+                                <th style={{ padding: '12px', textAlign: 'left' }}>Required</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {parts.filter(p => p.Category && !p.Category.includes('(')).map((part, idx) => (
+                            {categoriesData.filter(c => c.Category && !c.Category.includes('(')).map((cat, idx) => (
                                 <tr key={idx} style={{ borderBottom: '1px solid #f3f4f6' }}>
-                                    <td style={{ padding: '8px', fontSize: '13px', color: '#666' }}>{part.Part_ID}</td>
+                                    <td style={{ padding: '8px', fontSize: '12px', color: '#666' }}>{cat.Category}</td>
                                     <td style={{ padding: '8px' }}>
                                         <input 
-                                            value={part.Part_Name} 
-                                            onChange={(e) => handleUpdatePart(parts.indexOf(part), 'Part_Name', e.target.value)}
-                                            style={{ padding: '6px', width: '100%', border: '1px solid #f3f3f3' }}
+                                            value={cat.Display_Name} 
+                                            onChange={(e) => handleUpdateCategory(idx, 'Display_Name', e.target.value)}
+                                            style={{ padding: '6px', border: '1px solid #eee' }}
                                         />
                                     </td>
                                     <td style={{ padding: '8px' }}>
-                                        <input 
-                                            value={part.Price} 
-                                            onChange={(e) => handleUpdatePart(parts.indexOf(part), 'Price', e.target.value)}
-                                            style={{ padding: '6px', width: '80px', border: '1px solid #f3f3f3' }}
-                                        />
+                                        <select 
+                                            value={cat.Level || ''} 
+                                            onChange={(e) => handleUpdateCategory(idx, 'Level', e.target.value)}
+                                            style={{ padding: '6px', border: '1px solid #eee' }}
+                                        >
+                                            <option value="">None</option>
+                                            {LEVELS.map(l => <option key={l} value={l}>{l}</option>)}
+                                        </select>
                                     </td>
                                     <td style={{ padding: '8px' }}>
-                                        <input 
-                                            value={part.GLB_File} 
-                                            onChange={(e) => handleUpdatePart(parts.indexOf(part), 'GLB_File', e.target.value)}
-                                            style={{ padding: '6px', width: '150px', border: '1px solid #f3f3f3' }}
-                                        />
+                                        <select 
+                                            value={cat.Selection_Type || 'single'} 
+                                            onChange={(e) => handleUpdateCategory(idx, 'Selection_Type', e.target.value)}
+                                            style={{ padding: '6px', border: '1px solid #eee' }}
+                                        >
+                                            <option value="single">Single</option>
+                                            <option value="multi">Multi</option>
+                                        </select>
                                     </td>
                                     <td style={{ padding: '8px' }}>
-                                        <input 
-                                            value={part.SKU} 
-                                            onChange={(e) => handleUpdatePart(parts.indexOf(part), 'SKU', e.target.value)}
-                                            style={{ padding: '6px', width: '120px', border: '1px solid #f3f3f3' }}
-                                        />
+                                        <select 
+                                            value={cat.Required || 'no'} 
+                                            onChange={(e) => handleUpdateCategory(idx, 'Required', e.target.value)}
+                                            style={{ padding: '6px', border: '1px solid #eee' }}
+                                        >
+                                            <option value="yes">Yes</option>
+                                            <option value="no">No</option>
+                                        </select>
                                     </td>
                                 </tr>
                             ))}
@@ -274,12 +308,89 @@ const AdminPage = () => {
                 </div>
             </section>
 
+            {/* Parts Manager */}
+            <section className="parts-manager" style={{ marginBottom: '40px' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
+                    <h3 style={{ margin: 0 }}>Parts Management</h3>
+                    <button 
+                        onClick={handleAddPart}
+                        style={{ padding: '6px 12px', background: '#2563eb', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer' }}
+                    >
+                        + Add Part
+                    </button>
+                </div>
+                <div style={{ overflowX: 'auto', maxHeight: '500px', border: '1px solid #e5e7eb', borderRadius: '4px' }}>
+                    <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+                        <thead style={{ position: 'sticky', top: 0, background: '#f9fafb', zIndex: 1 }}>
+                            <tr style={{ borderBottom: '1px solid #e5e7eb' }}>
+                                <th style={{ padding: '12px', textAlign: 'left' }}>Part ID</th>
+                                <th style={{ padding: '12px', textAlign: 'left' }}>Name</th>
+                                <th style={{ padding: '12px', textAlign: 'left' }}>Category</th>
+                                <th style={{ padding: '12px', textAlign: 'left' }}>Price</th>
+                                <th style={{ padding: '12px', textAlign: 'left' }}>GLB File</th>
+                                <th style={{ padding: '12px', textAlign: 'left' }}>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {parts.filter(p => p.Part_ID && !p.Part_ID.includes('(')).map((part, idx) => {
+                                const originalIdx = parts.indexOf(part);
+                                return (
+                                    <tr key={idx} style={{ borderBottom: '1px solid #f3f4f6' }}>
+                                        <td style={{ padding: '8px', fontSize: '11px' }}>
+                                            <input 
+                                                value={part.Part_ID} 
+                                                onChange={(e) => handleUpdatePart(originalIdx, 'Part_ID', e.target.value)}
+                                                style={{ padding: '4px', width: '100px', border: '1px solid #eee' }}
+                                            />
+                                        </td>
+                                        <td style={{ padding: '8px' }}>
+                                            <input 
+                                                value={part.Part_Name} 
+                                                onChange={(e) => handleUpdatePart(originalIdx, 'Part_Name', e.target.value)}
+                                                style={{ padding: '4px', border: '1px solid #eee' }}
+                                            />
+                                        </td>
+                                        <td style={{ padding: '8px' }}>
+                                            <select 
+                                                value={part.Category} 
+                                                onChange={(e) => handleUpdatePart(originalIdx, 'Category', e.target.value)}
+                                                style={{ padding: '4px', border: '1px solid #eee' }}
+                                            >
+                                                {categories.map(c => <option key={c} value={c}>{c}</option>)}
+                                            </select>
+                                        </td>
+                                        <td style={{ padding: '8px' }}>
+                                            <input 
+                                                value={part.Price} 
+                                                onChange={(e) => handleUpdatePart(originalIdx, 'Price', e.target.value)}
+                                                style={{ padding: '4px', width: '60px', border: '1px solid #eee' }}
+                                            />
+                                        </td>
+                                        <td style={{ padding: '8px' }}>
+                                            <input 
+                                                value={part.GLB_File} 
+                                                onChange={(e) => handleUpdatePart(originalIdx, 'GLB_File', e.target.value)}
+                                                style={{ padding: '4px', width: '150px', border: '1px solid #eee' }}
+                                            />
+                                        </td>
+                                        <td style={{ padding: '8px' }}>
+                                            <button onClick={() => handleDeletePart(originalIdx)} style={{ color: 'red', border: 'none', background: 'none', cursor: 'pointer' }}>Delete</button>
+                                        </td>
+                                    </tr>
+                                );
+                            })}
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            {/* Presets Manager */}
             <section className="presets-manager">
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
                     <h3 style={{ margin: 0 }}>Presets Management</h3>
                     <button 
                         onClick={handleCreatePreset}
-                        style={{ padding: '6px 12px', background: '#2563eb', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer', fontSize: '13px' }}
+                        style={{ padding: '6px 12px', background: '#2563eb', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer' }}
                     >
                         + Add Preset
                     </button>
@@ -289,51 +400,47 @@ const AdminPage = () => {
                         <thead style={{ background: '#f9fafb' }}>
                             <tr style={{ borderBottom: '1px solid #e5e7eb' }}>
                                 <th style={{ padding: '12px', textAlign: 'left' }}>Preset Name</th>
-                                <th style={{ padding: '12px', textAlign: 'left' }}>Description</th>
                                 <th style={{ padding: '12px', textAlign: 'left' }}>Components</th>
                                 <th style={{ padding: '12px', textAlign: 'left' }}>Actions</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {presets.filter(p => p.Preset_Name && !p.Preset_Name.includes('(')).map((preset, idx) => (
-                                <tr key={idx} style={{ borderBottom: '1px solid #f3f4f6' }}>
-                                    <td style={{ padding: '8px', fontWeight: 'bold' }}>{preset.Preset_Name}</td>
-                                    <td style={{ padding: '8px' }}>
-                                        <input 
-                                            value={preset.Description} 
-                                            onChange={(e) => handleUpdatePreset(presets.indexOf(preset), 'Description', e.target.value)}
-                                            style={{ padding: '6px', width: '100%', border: '1px solid #f3f3f3' }}
-                                        />
-                                    </td>
-                                    <td style={{ padding: '8px' }}>
-                                        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '4px', fontSize: '11px' }}>
-                                            {categories.map(cat => (
-                                                <div key={cat} style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
-                                                    <label style={{ fontWeight: '600', color: '#666' }}>{cat}</label>
-                                                    <select 
-                                                        value={preset[cat] || ''}
-                                                        onChange={(e) => handleUpdatePreset(presets.indexOf(preset), cat, e.target.value)}
-                                                        style={{ padding: '4px', fontSize: '11px', border: '1px solid #ddd' }}
-                                                    >
-                                                        <option value="">None</option>
-                                                        {parts.filter(p => p.Category === cat).map(p => (
-                                                            <option key={p.Part_ID} value={p.Part_ID}>{p.Part_Name}</option>
-                                                        ))}
-                                                    </select>
-                                                </div>
-                                            ))}
-                                        </div>
-                                    </td>
-                                    <td style={{ padding: '8px' }}>
-                                        <button 
-                                            onClick={() => handleDeletePreset(presets.indexOf(preset))}
-                                            style={{ padding: '6px', background: 'transparent', color: '#dc2626', border: 'none', cursor: 'pointer', fontSize: '12px' }}
-                                        >
-                                            Delete
-                                        </button>
-                                    </td>
-                                </tr>
-                            ))}
+                            {presets.filter(p => p.Preset_Name && !p.Preset_Name.includes('(')).map((preset, idx) => {
+                                const originalIdx = presets.indexOf(preset);
+                                return (
+                                    <tr key={idx} style={{ borderBottom: '1px solid #f3f4f6' }}>
+                                        <td style={{ padding: '8px', fontWeight: 'bold' }}>
+                                            <input 
+                                                value={preset.Preset_Name} 
+                                                onChange={(e) => handleUpdatePreset(originalIdx, 'Preset_Name', e.target.value)}
+                                                style={{ padding: '6px', border: '1px solid #eee' }}
+                                            />
+                                        </td>
+                                        <td style={{ padding: '8px' }}>
+                                            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px', fontSize: '11px' }}>
+                                                {categories.map(cat => (
+                                                    <div key={cat}>
+                                                        <label style={{ color: '#888' }}>{cat}</label>
+                                                        <select 
+                                                            value={preset[cat] || ''}
+                                                            onChange={(e) => handleUpdatePreset(originalIdx, cat, e.target.value)}
+                                                            style={{ width: '100%', padding: '2px' }}
+                                                        >
+                                                            <option value="">None</option>
+                                                            {parts.filter(p => p.Category === cat).map(p => (
+                                                                <option key={p.Part_ID} value={p.Part_ID}>{p.Part_Name}</option>
+                                                            ))}
+                                                        </select>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        </td>
+                                        <td style={{ padding: '8px' }}>
+                                            <button onClick={() => handleDeletePreset(originalIdx)} style={{ color: 'red', border: 'none', background: 'none', cursor: 'pointer' }}>Delete</button>
+                                        </td>
+                                    </tr>
+                                );
+                            })}
                         </tbody>
                     </table>
                 </div>
