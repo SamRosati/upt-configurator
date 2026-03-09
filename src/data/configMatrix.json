@@ -261,12 +261,6 @@
       "message": ""
     },
     {
-      "ifPart": "control-handlebar",
-      "relation": "REQUIRES",
-      "thenPart": "control-column",
-      "message": ""
-    },
-    {
       "ifPart": "seat-leaning",
       "relation": "REQUIRES",
       "thenPart": "block-single",
