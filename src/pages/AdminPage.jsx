@@ -24,11 +24,21 @@ const AdminPage = () => {
     const fetchData = async () => {
         setLoading(true);
         setStatus('Fetching latest data from GitHub...');
+        
+        // Check for token first
+        if (!import.meta.env.VITE_GITHUB_TOKEN) {
+            setStatus('Error: VITE_GITHUB_TOKEN is missing. Please add it to your Vercel/environment variables.');
+            setLoading(false);
+            return;
+        }
+
         try {
             const { sha, content } = await github.getExcelData();
             const workbook = xlsx.read(content, { type: 'base64' });
             
             const partsSheet = workbook.Sheets['Parts'];
+            if (!partsSheet) throw new Error('Could not find "Parts" sheet in Excel file.');
+            
             const rawParts = xlsx.utils.sheet_to_json(partsSheet, { defval: "" });
             
             setExcelData({ sha, workbook });
@@ -36,7 +46,7 @@ const AdminPage = () => {
             setStatus('Ready');
         } catch (err) {
             console.error(err);
-            setStatus('Error fetching data: ' + err.message);
+            setStatus('Error: ' + err.message);
         } finally {
             setLoading(false);
         }

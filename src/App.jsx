@@ -9,7 +9,9 @@ function App() {
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
-    if (params.get('admin') === 'true') {
+    const path = window.location.pathname;
+    
+    if (params.get('admin') === 'true' || path === '/admin' || path === '/admin/') {
       setIsAdmin(true);
     }
   }, []);

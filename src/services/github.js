@@ -3,17 +3,22 @@
  * Handles reading and writing files directly to the GitHub repository.
  */
 
-const OWNER = import.meta.env.VITE_GITHUB_OWNER;
-const REPO = import.meta.env.VITE_GITHUB_REPO;
+const OWNER = import.meta.env.VITE_GITHUB_OWNER || 'SamRosati';
+const REPO = import.meta.env.VITE_GITHUB_REPO || 'upt-configurator';
 const BRANCH = import.meta.env.VITE_GITHUB_BRANCH || 'main';
 const TOKEN = import.meta.env.VITE_GITHUB_TOKEN;
 
 const BASE_URL = `https://api.github.com/repos/${OWNER}/${REPO}`;
 
-const headers = {
-    'Authorization': `token ${TOKEN}`,
-    'Accept': 'application/vnd.github.v3+json',
-    'Content-Type': 'application/json'
+const getHeaders = () => {
+    if (!TOKEN) {
+        throw new Error('VITE_GITHUB_TOKEN is missing. Please add it to your environment variables.');
+    }
+    return {
+        'Authorization': `token ${TOKEN}`,
+        'Accept': 'application/vnd.github.v3+json',
+        'Content-Type': 'application/json'
+    };
 };
 
 /**
@@ -21,7 +26,7 @@ const headers = {
  * @param {string} path - The path to the file in the repo.
  */
 export async function getFile(path) {
-    const response = await fetch(`${BASE_URL}/contents/${path}?ref=${BRANCH}`, { headers });
+    const response = await fetch(`${BASE_URL}/contents/${path}?ref=${BRANCH}`, { headers: getHeaders() });
     if (!response.ok) {
         throw new Error(`Failed to fetch ${path}: ${response.statusText}`);
     }
@@ -48,7 +53,7 @@ export async function updateFile(path, content, message, sha = null) {
 
     const response = await fetch(`${BASE_URL}/contents/${path}`, {
         method: 'PUT',
-        headers,
+        headers: getHeaders(),
         body: JSON.stringify(body)
     });
 
