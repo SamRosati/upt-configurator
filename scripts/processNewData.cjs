@@ -32,9 +32,8 @@ const processData = () => {
         id: cat.Category,
         name: cat.Display_Name,
         level: cat.Level,
-        type: cat.Selection_Type,
-        priority: parseInt(cat.Load_Priority),
-        required: cat.Required && String(cat.Required).toLowerCase() === 'yes',
+        type: cat.Selection_Type || 'single',
+        required: cat.Required === 'yes',
         icon: cat.Icon
     }));
 

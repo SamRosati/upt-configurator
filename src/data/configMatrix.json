@@ -4,7 +4,6 @@
       "id": "Block",
       "name": "Chassis",
       "type": "single",
-      "priority": 1,
       "required": true,
       "icon": "chassis"
     },
@@ -12,7 +11,6 @@
       "id": "Wheelbase",
       "name": "Wheelbase",
       "type": "single",
-      "priority": 1,
       "required": true,
       "icon": "wheelbase"
     },
@@ -20,7 +18,6 @@
       "id": "Motor",
       "name": "Electric Motor",
       "type": "single",
-      "priority": 1,
       "required": true,
       "icon": "motor"
     },
@@ -28,7 +25,6 @@
       "id": "Tire",
       "name": "Wheels & Tires",
       "type": "single",
-      "priority": 1,
       "required": true,
       "icon": "tire"
     },
@@ -36,7 +32,6 @@
       "id": "Control",
       "name": "Steering Control",
       "type": "single",
-      "priority": 2,
       "required": true,
       "icon": "control"
     },
@@ -44,7 +39,6 @@
       "id": "Seat",
       "name": "Seating",
       "type": "single",
-      "priority": 2,
       "required": true,
       "icon": "seat"
     },
@@ -52,7 +46,6 @@
       "id": "Body",
       "name": "Body Parts",
       "type": "multi",
-      "priority": 3,
       "required": false,
       "icon": "body"
     },
@@ -60,7 +53,6 @@
       "id": "Accessories",
       "name": "Accessories",
       "type": "multi",
-      "priority": 4,
       "required": false,
       "icon": "accessories"
     },
@@ -68,7 +60,6 @@
       "id": "Color",
       "name": "Color & Finish",
       "type": "single",
-      "priority": 5,
       "required": false,
       "icon": "palette"
     }
@@ -81,7 +72,7 @@
       "glb": "block.glb",
       "node": "Block_Single",
       "sku": "BLK-SG",
-      "price": 0,
+      "price": 1999,
       "status": "available",
       "description": "Single width chassis block"
     },
@@ -92,7 +83,7 @@
       "glb": "wb.glb",
       "node": "WB_1330",
       "sku": "WB-1330",
-      "price": 0,
+      "price": 999,
       "status": "available",
       "description": "long wheelbase "
     },
@@ -103,7 +94,7 @@
       "glb": "motor.glb",
       "node": "Motor_A_1330",
       "sku": "MOT-A-1330",
-      "price": 0,
+      "price": 999,
       "status": "available",
       "description": "Motor Type A For short wheelbase"
     },
@@ -125,7 +116,7 @@
       "glb": "control.glb",
       "node": "Control_Column",
       "sku": "CTL-COL",
-      "price": 0,
+      "price": 500,
       "status": "available",
       "description": "Standard Column"
     },
@@ -136,7 +127,7 @@
       "glb": "control.glb",
       "node": "Control_Handlebar",
       "sku": "CTL-HBAR",
-      "price": 0,
+      "price": 500,
       "status": "available",
       "description": "Standard Handle Bar"
     },
@@ -266,22 +257,6 @@
   ],
   "presets": [
     {
-      "name": "Display name for preset",
-      "description": "Description shown to users",
-      "parts": {
-        "Block": "Block Part_ID",
-        "Wheelbase": "Wheelbase Part_ID",
-        "Tire": "Tire Part_id",
-        "Motor": "Motor Part_ID",
-        "Control": "Control Part_ID",
-        "Seat": "Seat Part_ID",
-        "Wheels": "Wheels Part_ID",
-        "Body": "Body Part_IDs (comma-separated for multiple)",
-        "Accessories": "Accessory Part_IDs (comma-separated)",
-        "Color": "Color Part_ID"
-      }
-    },
-    {
       "name": "ATV",
       "description": "All-Terrain Vehicle",
       "parts": {
@@ -305,19 +280,16 @@
     },
     {
       "name": "Essential",
-      "description": "Basic configuration",
+      "description": "Basic Urban Mobility",
       "parts": {
         "Block": "block-single",
         "Wheelbase": "wb-1330",
         "Tire": "tire-offroad-1330",
         "Motor": "motor-a-1330",
-        "Control": [
-          "control-column",
-          "control-handlebar"
-        ],
+        "Control": "control-handlebar",
         "Seat": "seat-leaning",
         "Wheels": "wheels-urban",
-        "Body": "body-fenders"
+        "Body": "body-sidesteplg"
       }
     }
   ]

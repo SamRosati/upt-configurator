@@ -209,7 +209,12 @@ const ConfiguratorUI = () => {
                 </button>
                 <button 
                     className={activeTab === 'build' ? 'active' : ''} 
-                    onClick={() => setActiveTab('build')}
+                    onClick={() => {
+                        if (activeTab !== 'build') {
+                            useConfiguratorStore.getState().resetConfig();
+                        }
+                        setActiveTab('build');
+                    }}
                 >
                     <span className="icon">🔩</span> Build from Frame
                 </button>

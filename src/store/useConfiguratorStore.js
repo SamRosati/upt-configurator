@@ -70,20 +70,22 @@ const normalizeSelectedParts = (selectedParts, matrixData) => {
 const getDefaultSelection = (matrixData) => {
     const defaults = {};
 
-    matrixData.categories.forEach((cat) => {
-        if (!cat.required) return;
-
-        const partsForCategory = matrixData.parts.filter((p) => p.category === cat.id);
-        if (partsForCategory.length === 0) return;
-
-        const first = partsForCategory[0];
-
-        if (cat.type === 'multi') {
-            defaults[cat.id] = first?.id ? [first.id] : [];
-        } else {
-            if (first?.id) defaults[cat.id] = first.id;
+    // For a "Build from Frame" starting point, we only want the absolute minimum.
+    // Usually that's just the 'Block' category (Main Block).
+    // Let's find the first required category.
+    const firstRequiredCat = matrixData.categories.find(c => c.required);
+    
+    if (firstRequiredCat) {
+        const partsForCategory = matrixData.parts.filter((p) => p.category === firstRequiredCat.id);
+        if (partsForCategory.length > 0) {
+            const first = partsForCategory[0];
+            if (firstRequiredCat.type === 'multi') {
+                defaults[firstRequiredCat.id] = [first.id];
+            } else {
+                defaults[firstRequiredCat.id] = first.id;
+            }
         }
-    });
+    }
 
     return defaults;
 };
@@ -219,6 +221,15 @@ const useConfiguratorStore = create((set, get) => ({
     matrix: matrix,
     selectedParts: initialSelectedParts,
     currentPreset: null,
+
+    resetConfig: () => {
+        const defaults = getDefaultSelection(matrix);
+        set({ 
+            selectedParts: defaults,
+            currentPreset: null
+        });
+        updateURL(defaults);
+    },
 
     selectPart: (category, partId) => {
         set((state) => {
