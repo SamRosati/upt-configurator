@@ -92,17 +92,17 @@ const AdminPage = () => {
 
     if (!isLoggedIn) {
         return (
-            <div className="admin-login" style={{ padding: '40px', maxWidth: '400px', margin: '100px auto', background: '#f5f5f5', borderRadius: '8px' }}>
-                <h2>Envo Admin Access</h2>
+            <div className="admin-login" style={{ padding: '40px', maxWidth: '400px', margin: '100px auto', background: '#fff', borderRadius: '8px', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }}>
+                <h2 style={{ marginTop: 0 }}>Envo Admin Access</h2>
                 <form onSubmit={handleLogin}>
                     <input 
                         type="password" 
                         placeholder="Access Code" 
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
-                        style={{ width: '100%', padding: '10px', marginBottom: '10px' }}
+                        style={{ width: '100%', padding: '12px', marginBottom: '16px', border: '1px solid #ddd', borderRadius: '4px', boxSizing: 'border-box' }}
                     />
-                    <button type="submit" style={{ padding: '10px 20px', background: '#2563eb', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer' }}>
+                    <button type="submit" style={{ width: '100%', padding: '12px', background: '#2563eb', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer', fontWeight: 'bold' }}>
                         Login
                     </button>
                 </form>
@@ -111,20 +111,45 @@ const AdminPage = () => {
     }
 
     return (
-        <div className="admin-dashboard" style={{ padding: '20px', background: '#fff' }}>
-            <header style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
-                <h1>Configurator Admin</h1>
-                <div>
-                    <span style={{ marginRight: '15px', color: '#666' }}>{status}</span>
+        <div className="admin-dashboard" style={{ padding: '20px', background: '#fff', minHeight: '100vh', color: '#111' }}>
+            <header style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px', borderBottom: '2px solid #f3f4f6', paddingBottom: '20px' }}>
+                <h1 style={{ margin: 0 }}>Configurator Admin</h1>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
+                    <span style={{ 
+                        color: status.includes('Error') ? '#dc2626' : '#666',
+                        fontWeight: status.includes('Error') ? 'bold' : 'normal'
+                    }}>
+                        {status}
+                    </span>
                     <button 
                         onClick={handleSave} 
-                        disabled={loading}
-                        style={{ padding: '10px 20px', background: '#16a34a', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer' }}
+                        disabled={loading || !excelData}
+                        style={{ 
+                            padding: '10px 20px', 
+                            background: '#16a34a', 
+                            color: 'white', 
+                            border: 'none', 
+                            borderRadius: '4px', 
+                            cursor: (loading || !excelData) ? 'not-allowed' : 'pointer',
+                            opacity: (loading || !excelData) ? 0.6 : 1
+                        }}
                     >
                         {loading ? 'Saving...' : 'Save & Publish'}
                     </button>
                 </div>
             </header>
+
+            {status.includes('VITE_GITHUB_TOKEN') && (
+                <div style={{ padding: '20px', background: '#fef2f2', border: '1px solid #fecaca', borderRadius: '8px', marginBottom: '20px' }}>
+                    <h3 style={{ color: '#991b1b', marginTop: 0 }}>Setup Required</h3>
+                    <p>To enable the Admin Dashboard, you need to add a GitHub Personal Access Token to Vercel:</p>
+                    <ol>
+                        <li>Go to <strong>Vercel Dashboard &gt; Settings &gt; Environment Variables</strong></li>
+                        <li>Add <strong>VITE_GITHUB_TOKEN</strong> with your token as the value.</li>
+                        <li><strong>Redeploy</strong> your project for changes to take effect.</li>
+                    </ol>
+                </div>
+            )}
 
             <section className="parts-manager">
                 <h3>Parts Management</h3>
