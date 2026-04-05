@@ -366,7 +366,7 @@
       "name": "Leaning Seat",
       "category": "Seat",
       "glb": "seat.glb",
-      "node": "Leaning_Seat",
+      "node": "Seat_Leaning",
       "sku": "SEAT-LEAN",
       "price": 299,
       "status": "available",

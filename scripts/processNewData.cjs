@@ -2,6 +2,17 @@ const fs = require('fs');
 const path = require('path');
 const xlsx = require('xlsx');
 
+const nodeAliasesPath = path.join(__dirname, '..', 'src', 'data', 'nodeNameAliases.json');
+const nodeNameAliases = fs.existsSync(nodeAliasesPath)
+    ? JSON.parse(fs.readFileSync(nodeAliasesPath, 'utf8'))
+    : {};
+
+const resolveNodeName = (raw) => {
+    const n = String(raw || '').trim();
+    if (!n) return n;
+    return nodeNameAliases[n] || n;
+};
+
 const processData = () => {
     const excelPath = path.join(__dirname, '..', 'Configurator_Data.xlsx');
     if (!fs.existsSync(excelPath)) {
@@ -81,7 +92,7 @@ const processData = () => {
             name: String(part.Part_Name),
             category: part.Category,
             glb: normalizeGlb(part.GLB_File),
-            node: part.Node_Name,
+            node: resolveNodeName(part.Node_Name),
             sku: String(part.SKU),
             price: (part.Price === 'XXXX' || part.Price === 'XXX' || !part.Price) ? 0 : parseFloat(part.Price),
             status: String(part.Status || '').toLowerCase() || 'available',

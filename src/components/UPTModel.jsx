@@ -1,6 +1,7 @@
 import React, { Suspense } from 'react';
 import { useGLTF } from '@react-three/drei';
 import useConfiguratorStore from '../store/useConfiguratorStore';
+import nodeNameAliases from '../data/nodeNameAliases.json';
 
 class AssetErrorBoundary extends React.Component {
     constructor(props) {
@@ -43,7 +44,9 @@ const SingleAsset = ({ url, selectedPartNodeNames }) => {
         let foundAnySelectedNode = false;
         selectedPartNodeNames.forEach((nodeName) => {
             if (!nodeName) return;
-            const obj = c.getObjectByName(nodeName);
+            const obj =
+                c.getObjectByName(nodeName) ||
+                (nodeNameAliases[nodeName] ? c.getObjectByName(nodeNameAliases[nodeName]) : null);
             if (!obj) return;
             foundAnySelectedNode = true;
 
@@ -61,12 +64,12 @@ const SingleAsset = ({ url, selectedPartNodeNames }) => {
             }
         });
 
-        // If the spreadsheet's Node_Name values don't match the GLB's actual node names,
-        // fall back to showing the whole asset instead of rendering nothing.
         if (selectedPartNodeNames.length > 0 && !foundAnySelectedNode) {
-            c.traverse((node) => {
-                if (node.isMesh || node.isGroup) node.visible = true;
-            });
+            console.warn(
+                '[UPTModel] No GLB nodes matched for',
+                selectedPartNodeNames,
+                '- add names to src/data/nodeNameAliases.json or fix Node_Name in the spreadsheet.'
+            );
         }
 
         return c;
