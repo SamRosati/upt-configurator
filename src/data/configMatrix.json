@@ -1544,6 +1544,36 @@
       "relation": "EXCLUDES",
       "thenPart": "body-rearbumperop",
       "message": ""
+    },
+    {
+      "ifPart": "body-frontrack",
+      "relation": "EXCLUDES",
+      "thenPart": "topbody-cargobike-l",
+      "message": ""
+    },
+    {
+      "ifPart": "body-rearack",
+      "relation": "EXCLUDES",
+      "thenPart": "topbody-cargobike-l",
+      "message": ""
+    },
+    {
+      "ifPart": "topbody-cargobike-l",
+      "relation": "REQUIRES",
+      "thenPart": "body-fenders",
+      "message": ""
+    },
+    {
+      "ifPart": "topbody-cargobike-l",
+      "relation": "EXCLUDES",
+      "thenPart": "body-frontrack",
+      "message": ""
+    },
+    {
+      "ifPart": "topbody-cargobike-l",
+      "relation": "EXCLUDES",
+      "thenPart": "body-rearack",
+      "message": ""
     }
   ],
   "presets": [
@@ -1649,7 +1679,8 @@
         "Handle": "handle-bar-65-sxs",
         "Seat": "seat-sxs",
         "Body": [
-          "body-flatbedlg",
+          "body-sidesteplg",
+          "body-fenders",
           "body-frontbumper"
         ],
         "Accessories": [
@@ -1716,6 +1747,26 @@
           "body-rearbumper"
         ],
         "Topbody": "topbody-cargobike"
+      }
+    },
+    {
+      "name": "Cargo Bike Long",
+      "description": "Long-wheelbase cargo bike with extended top",
+      "parts": {
+        "Block": "block-single",
+        "Wheelbase": "wb-1330",
+        "Tire": "tire-cargobike-1330",
+        "Motor": "motor-a-1330",
+        "Column": "column-cargobike-l",
+        "Handle": "handle-cargobike-l",
+        "Seat": "seat-cargo-bike",
+        "Body": [
+          "body-sidesteplg",
+          "body-fenders",
+          "body-frontbumper",
+          "body-rearbumper"
+        ],
+        "Topbody": "topbody-cargobike-l"
       }
     }
   ]
