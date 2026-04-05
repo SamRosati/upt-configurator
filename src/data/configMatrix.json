@@ -1739,7 +1739,7 @@
         "Motor": "motor-a-1330",
         "Column": "column-cyc-65",
         "Handle": "handle-cyc-65",
-        "Seat": "seat-cargo-bike",
+        "Seat": "seat-cyc-65",
         "Body": [
           "body-sidesteplg",
           "body-fenders",
