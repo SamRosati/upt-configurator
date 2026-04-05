@@ -84,7 +84,31 @@ export const enforceRules = (selectedParts, matrix) => {
     while (changed) {
         changed = false;
 
-        // 1) Pull in all required dependencies.
+        // 1) Prune first: drop parts whose REQUIRES are not satisfied (cascades).
+        //    Must run before expanding REQUIRES, otherwise e.g. motor would re-add wheelbase
+        //    immediately after the user clears wheelbase.
+        let pruned = true;
+        while (pruned) {
+            pruned = false;
+            for (const id of [...selectedPartIds(next)]) {
+                const rules = idx.rulesByIfPart.get(id) || [];
+                const selectedSet = new Set(selectedPartIds(next));
+                const hasMissingRequires = rules.some(
+                    (r) => String(r.relation).toUpperCase() === 'REQUIRES' && !selectedSet.has(r.thenPart)
+                );
+                if (hasMissingRequires) {
+                    const before = JSON.stringify(next);
+                    next = removePart(next, id, idx);
+                    if (JSON.stringify(next) !== before) {
+                        pruned = true;
+                        changed = true;
+                    }
+                    break;
+                }
+            }
+        }
+
+        // 2) Pull in all required dependencies for what remains selected.
         for (const id of selectedPartIds(next)) {
             const rules = idx.rulesByIfPart.get(id) || [];
             for (const rule of rules) {
@@ -95,27 +119,13 @@ export const enforceRules = (selectedParts, matrix) => {
             }
         }
 
-        // 2) Remove any excluded parts.
+        // 3) Remove any excluded parts.
         for (const id of selectedPartIds(next)) {
             const rules = idx.rulesByIfPart.get(id) || [];
             for (const rule of rules) {
                 if (String(rule.relation).toUpperCase() !== 'EXCLUDES') continue;
                 const before = JSON.stringify(next);
                 next = removePart(next, rule.thenPart, idx);
-                if (JSON.stringify(next) !== before) changed = true;
-            }
-        }
-
-        // 3) Drop parts whose REQUIRES can no longer be satisfied.
-        for (const id of selectedPartIds(next)) {
-            const rules = idx.rulesByIfPart.get(id) || [];
-            const selectedSet = new Set(selectedPartIds(next));
-            const hasMissingRequires = rules.some(
-                (r) => String(r.relation).toUpperCase() === 'REQUIRES' && !selectedSet.has(r.thenPart)
-            );
-            if (hasMissingRequires) {
-                const before = JSON.stringify(next);
-                next = removePart(next, id, idx);
                 if (JSON.stringify(next) !== before) changed = true;
             }
         }

@@ -186,13 +186,21 @@ const useConfiguratorStore = create((set, get) => ({
                     let nextArr = [...currentArr];
 
                     if (isBase) {
-                        // Replace base selection(s), keep any valid dependents.
-                        nextArr = nextArr.filter((id) => !baseIds.has(id));
-                        nextArr.push(partId);
+                        const basesNow = currentArr.filter((id) => baseIds.has(id));
+                        if (basesNow.length === 1 && basesNow[0] === partId) {
+                            nextArr = currentArr.filter((id) => !baseIds.has(id));
+                        } else {
+                            nextArr = nextArr.filter((id) => !baseIds.has(id));
+                            nextArr.push(partId);
+                        }
                     } else if (isDependent) {
-                        // Replace dependent selection(s), keep base(s).
-                        nextArr = nextArr.filter((id) => !dependentIds.has(id));
-                        nextArr.push(partId);
+                        const depsNow = currentArr.filter((id) => dependentIds.has(id));
+                        if (depsNow.length === 1 && depsNow[0] === partId) {
+                            nextArr = currentArr.filter((id) => !dependentIds.has(id));
+                        } else {
+                            nextArr = nextArr.filter((id) => !dependentIds.has(id));
+                            nextArr.push(partId);
+                        }
                     } else {
                         // For any other parts, just toggle like multi.
                         nextArr = nextArr.includes(partId)
@@ -203,9 +211,14 @@ const useConfiguratorStore = create((set, get) => ({
                     newSelected = { ...state.selectedParts, [category]: Array.from(new Set(nextArr)) };
                 }
             } else {
-                // If same part is selected and it's not required, toggle off? 
-                // For now, just set it.
-                newSelected = { ...state.selectedParts, [category]: partId };
+                // Single-select: click another part to switch; click the same part again to clear.
+                const current = state.selectedParts[category];
+                if (current === partId) {
+                    newSelected = { ...state.selectedParts };
+                    delete newSelected[category];
+                } else {
+                    newSelected = { ...state.selectedParts, [category]: partId };
+                }
             }
 
             // Auto-apply REQUIRES rules so selections make sense (e.g. handlebar implies column).
