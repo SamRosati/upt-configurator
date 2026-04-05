@@ -1567,7 +1567,7 @@
         "Motor": "motor-a-1130",
         "Column": "column-65-L",
         "Handle": "handle-bar-65-L",
-        "Seat": "seat-leaning",
+        "Seat": "seat-lean",
         "Body": "body-sidestepsm"
       }
     },
@@ -1650,7 +1650,6 @@
         "Seat": "seat-sxs",
         "Body": [
           "body-flatbedlg",
-          "body-fenders",
           "body-frontbumper"
         ],
         "Accessories": [
@@ -1671,10 +1670,10 @@
         "Handle": "handle-sw-65-sxs",
         "Seat": "seat-sxs",
         "Body": [
-          "body-flatbedlg",
+          "body-sidesteplg",
           "body-fenders",
           "body-frontbumper",
-          "body-frontrack"
+          "body-rearbumper"
         ],
         "Topbody": "topbody-golf"
       }
@@ -1707,9 +1706,9 @@
         "Wheelbase": "wb-1330",
         "Tire": "tire-urban-1330",
         "Motor": "motor-a-1330",
-        "Column": "column-cycling",
-        "Handle": "handle-cycling",
-        "Seat": "seat-bike",
+        "Column": "column-cyc-65",
+        "Handle": "handle-cyc-65",
+        "Seat": "seat-cargo-bike",
         "Body": [
           "body-sidesteplg",
           "body-fenders",
