@@ -3,7 +3,6 @@
     {
       "id": "Block",
       "name": "Chassis",
-      "level": "Main Block",
       "type": "single",
       "required": true,
       "icon": "chassis"
@@ -11,7 +10,6 @@
     {
       "id": "Wheelbase",
       "name": "Wheelbase",
-      "level": "Wheelbase",
       "type": "single",
       "required": true,
       "icon": "wheelbase"
@@ -19,7 +17,6 @@
     {
       "id": "Motor",
       "name": "Electric Motor",
-      "level": "Motor",
       "type": "single",
       "required": true,
       "icon": "motor"
@@ -27,23 +24,13 @@
     {
       "id": "Tire",
       "name": "Wheels & Tires",
-      "level": "Tires",
       "type": "single",
       "required": true,
       "icon": "tire"
     },
     {
-      "id": "Control",
-      "name": "Steering Control",
-      "level": "Steering & Controls",
-      "type": "single",
-      "required": true,
-      "icon": "control"
-    },
-    {
       "id": "Seat",
       "name": "Seating",
-      "level": "Seating",
       "type": "single",
       "required": true,
       "icon": "seat"
@@ -51,7 +38,6 @@
     {
       "id": "Body",
       "name": "Body Parts",
-      "level": "Body Parts",
       "type": "multi",
       "required": false,
       "icon": "body"
@@ -59,18 +45,33 @@
     {
       "id": "Accessories",
       "name": "Accessories",
-      "level": "Accessories",
       "type": "multi",
       "required": false,
       "icon": "accessories"
     },
     {
-      "id": "Color",
-      "name": "Color & Finish",
+      "id": "Column",
+      "name": "Column",
+      "level": "",
+      "type": "single",
+      "required": true,
+      "icon": ""
+    },
+    {
+      "id": "Handle",
+      "name": "Handle",
+      "level": "",
+      "type": "single",
+      "required": true,
+      "icon": ""
+    },
+    {
+      "id": "Topbody",
+      "name": "Topbody",
       "level": "",
       "type": "single",
       "required": false,
-      "icon": "palette"
+      "icon": ""
     }
   ],
   "parts": [
@@ -81,9 +82,20 @@
       "glb": "block.glb",
       "node": "Block_Single",
       "sku": "BLK-SG",
-      "price": 1999,
+      "price": 3069,
       "status": "available",
-      "description": "Single width chassis block"
+      "description": "Single width chassis block with standard battery"
+    },
+    {
+      "id": "wb-1130",
+      "name": "Short Wheelbase 1130",
+      "category": "Wheelbase",
+      "glb": "wb.glb",
+      "node": "WB_1130",
+      "sku": "SUS",
+      "price": 999,
+      "status": "available",
+      "description": "short wheelbase"
     },
     {
       "id": "wb-1330",
@@ -91,10 +103,21 @@
       "category": "Wheelbase",
       "glb": "wb.glb",
       "node": "WB_1330",
-      "sku": "WB-1330",
+      "sku": "SUS",
       "price": 999,
       "status": "available",
       "description": "long wheelbase "
+    },
+    {
+      "id": "motor-a-1130",
+      "name": "Motor A 1130",
+      "category": "Motor",
+      "glb": "motor.glb",
+      "node": "Motor_A_1130",
+      "sku": "MOT-A",
+      "price": 999,
+      "status": "available",
+      "description": "Motor Type A For long wheelbase"
     },
     {
       "id": "motor-a-1330",
@@ -102,10 +125,43 @@
       "category": "Motor",
       "glb": "motor.glb",
       "node": "Motor_A_1330",
-      "sku": "MOT-A-1330",
+      "sku": "MOT-A",
       "price": 999,
       "status": "available",
       "description": "Motor Type A For short wheelbase"
+    },
+    {
+      "id": "tire-urban-1130",
+      "name": "Urban Tires 1130",
+      "category": "Tire",
+      "glb": "tire.glb",
+      "node": "Tire_Urban_1130",
+      "sku": "TIRE-URB",
+      "price": 399,
+      "status": "available",
+      "description": "Street tires for Short wheelbase"
+    },
+    {
+      "id": "tire-offroad-1130",
+      "name": "Offroad Tires 1130",
+      "category": "Tire",
+      "glb": "tire.glb",
+      "node": "Tire_Offroad_1130",
+      "sku": "TIRE-OFF",
+      "price": 399,
+      "status": "available",
+      "description": "All-terrain tires for Short wheelbase"
+    },
+    {
+      "id": "tire-urban-1330",
+      "name": "Urban Tires 1330",
+      "category": "Tire",
+      "glb": "tire.glb",
+      "node": "Tire_Urban_1330",
+      "sku": "TIRE-URB",
+      "price": 399,
+      "status": "available",
+      "description": "Street tires for Long wheelbase "
     },
     {
       "id": "tire-offroad-1330",
@@ -113,43 +169,274 @@
       "category": "Tire",
       "glb": "tire.glb",
       "node": "Tire_Offroad_1330",
-      "sku": "TIRE-OFF-1330",
-      "price": 549,
+      "sku": "TIRE-OFF",
+      "price": 399,
       "status": "available",
       "description": "All-terrain tires for Long wheelbase "
     },
     {
-      "id": "control-column",
-      "name": "Column Standard Position",
-      "category": "Control",
-      "glb": "control.glb",
-      "node": "Control_Column",
-      "sku": "CTL-COL",
-      "price": 500,
+      "id": "tire-cargobike-1330",
+      "name": "CargoBike Tires 1330",
+      "category": "Tire",
+      "glb": "tire.glb",
+      "node": "Tire_CargoBike_1330",
+      "sku": "TIRE-CBIKE",
+      "price": 399,
       "status": "available",
-      "description": "Standard Column"
+      "description": "All-terrain tires for Long wheelbase "
     },
     {
-      "id": "control-handlebar",
-      "name": "Handle Bar",
-      "category": "Control",
-      "glb": "control.glb",
-      "node": "Control_Handlebar",
-      "sku": "CTL-HBAR",
-      "price": 500,
+      "id": "column-90",
+      "name": "Column 90 Degree",
+      "category": "Column",
+      "glb": "column.glb",
+      "node": "Column_90",
+      "sku": "COL",
+      "price": 699,
       "status": "available",
-      "description": "Standard Handle Bar"
+      "description": "Steering Column at upright position"
     },
     {
-      "id": "seat-leaning",
+      "id": "column-65",
+      "name": "Column 65 Degree",
+      "category": "Column",
+      "glb": "column.glb",
+      "node": "Column_65",
+      "sku": "COL",
+      "price": 699,
+      "status": "available",
+      "description": "Steering Column at 65 degree for high driving"
+    },
+    {
+      "id": "column-65-L",
+      "name": "Column 65 Degree Long",
+      "category": "Column",
+      "glb": "column.glb",
+      "node": "Column_65L",
+      "sku": "COL",
+      "price": 699,
+      "status": "available",
+      "description": "Steering Column at 65 degree for Standup riding"
+    },
+    {
+      "id": "column-45",
+      "name": "Column 45 Degree",
+      "category": "Column",
+      "glb": "column.glb",
+      "node": "Column_45",
+      "sku": "COL",
+      "price": 699,
+      "status": "available",
+      "description": "Steering Column at 45 degree for low driving"
+    },
+    {
+      "id": "column-cyc-65",
+      "name": "Column Cycling 65 Degree",
+      "category": "Column",
+      "glb": "column.glb",
+      "node": "Column_Cycling_65",
+      "sku": "COL-CYC-65",
+      "price": 699,
+      "status": "available",
+      "description": "Steering Column at 65 degree for cycling"
+    },
+    {
+      "id": "column-cargobike-l",
+      "name": "Column Cargo Bike Long",
+      "category": "Column",
+      "glb": "column.glb",
+      "node": "Column_Cargobike_Long",
+      "sku": "COL-CBIKE-L",
+      "price": 0,
+      "status": "available",
+      "description": "Steering Column for cargo bike Long"
+    },
+    {
+      "id": "handle-bar-90-rev",
+      "name": "Handle Bar 90 Degree Reverse",
+      "category": "Handle",
+      "glb": "handle.glb",
+      "node": "Handle_Bar_90_Rev",
+      "sku": "HDL",
+      "price": 499,
+      "status": "available",
+      "description": "Handlebar for standup reverse riding"
+    },
+    {
+      "id": "handle-bar-65",
+      "name": "Handle Bar 65 Degree",
+      "category": "Handle",
+      "glb": "handle.glb",
+      "node": "Handle_Bar_65",
+      "sku": "HDL",
+      "price": 499,
+      "status": "available",
+      "description": "Handlebar "
+    },
+    {
+      "id": "handle-bar-65-sxs",
+      "name": "Handle Bar 65 Degree SXS",
+      "category": "Handle",
+      "glb": "handle.glb",
+      "node": "Handle_Bar_65_SXS",
+      "sku": "HDL",
+      "price": 499,
+      "status": "available",
+      "description": "Offset Handlebar for side-by-side"
+    },
+    {
+      "id": "handle-bar-65-L",
+      "name": "Handle Bar 65 Degree L",
+      "category": "Handle",
+      "glb": "handle.glb",
+      "node": "Handle_Bar_65_L",
+      "sku": "HDL",
+      "price": 499,
+      "status": "available",
+      "description": "Handlebar for standup riding"
+    },
+    {
+      "id": "handle-sw-45",
+      "name": "Steering Wheel 45 Degree",
+      "category": "Handle",
+      "glb": "handle.glb",
+      "node": "Handle_SteeringW_45",
+      "sku": "HDL-SW",
+      "price": 699,
+      "status": "available",
+      "description": "Steering Wheel at 45 degree for low driving"
+    },
+    {
+      "id": "handle-sw-65",
+      "name": "Steering Wheel 65 Degree",
+      "category": "Handle",
+      "glb": "handle.glb",
+      "node": "Handle_SteeringW_65",
+      "sku": "HDL-SW",
+      "price": 699,
+      "status": "available",
+      "description": "Steering Wheel at 65 degree for high driving"
+    },
+    {
+      "id": "handle-sw-65-sxs",
+      "name": "Steering Wheel 65 Degree SXS",
+      "category": "Handle",
+      "glb": "handle.glb",
+      "node": "Handle_SteeringW_65_SXS",
+      "sku": "HDL-SW",
+      "price": 699,
+      "status": "available",
+      "description": "Steering Wheel at 65 degree for high driving side-by-side"
+    },
+    {
+      "id": "handle-gaspedal",
+      "name": "Gas Pedal",
+      "category": "Handle",
+      "glb": "handle.glb",
+      "node": "Handle_GasPedal",
+      "sku": "HDL-GPEDAL",
+      "price": 0,
+      "status": "available",
+      "description": "Gas and Brake Pedal set for Steering Wheel driving"
+    },
+    {
+      "id": "handle-cyc-65",
+      "name": "Handle Bar Cycling 65 Degree",
+      "category": "Handle",
+      "glb": "handle.glb",
+      "node": "Handle_Cycling_65",
+      "sku": "HDL",
+      "price": 699,
+      "status": "available",
+      "description": "Cycling at 65 degree for high driving side-by-side"
+    },
+    {
+      "id": "handle-cargobike-l",
+      "name": "Handle Bar Cargo Bike Long",
+      "category": "Handle",
+      "glb": "handle.glb",
+      "node": "Handle_CargoBike_Long",
+      "sku": "HDL",
+      "price": 0,
+      "status": "available",
+      "description": "Cycling at Cargo Bike"
+    },
+    {
+      "id": "seat-lean",
       "name": "Leaning Seat",
       "category": "Seat",
       "glb": "seat.glb",
-      "node": "Seat_Leaning",
+      "node": "Leaning_Seat",
       "sku": "SEAT-LEAN",
       "price": 299,
       "status": "available",
-      "description": "Compact standing/leaning seat"
+      "description": "Standup riding lean pad"
+    },
+    {
+      "id": "seat-bucket",
+      "name": "Bucket Seat",
+      "category": "Seat",
+      "glb": "seat.glb",
+      "node": "Seat_Bucket",
+      "sku": "SEAT-BUCKET",
+      "price": 599,
+      "status": "available",
+      "description": "Premium bucket seat"
+    },
+    {
+      "id": "seat-full",
+      "name": "Full Seat",
+      "category": "Seat",
+      "glb": "seat.glb",
+      "node": "Seat_Full",
+      "sku": "SEAT-FULL",
+      "price": 599,
+      "status": "available",
+      "description": "Single driving seat"
+    },
+    {
+      "id": "seat-sxs",
+      "name": "SXS Seat",
+      "category": "Seat",
+      "glb": "seat.glb",
+      "node": "Seat_SXS",
+      "sku": "SEAT-SXS",
+      "price": 599,
+      "status": "available",
+      "description": "Side by side seats"
+    },
+    {
+      "id": "seat-cyc-65",
+      "name": "Cycling Seat 65 Degree",
+      "category": "Seat",
+      "glb": "seat.glb",
+      "node": "Seat_Cycling_65",
+      "sku": "SEAT-CYC-65",
+      "price": 599,
+      "status": "available",
+      "description": "Seat for cycling"
+    },
+    {
+      "id": "seat-cargo-bike",
+      "name": "Cargo Bike Seat",
+      "category": "Seat",
+      "glb": "seat.glb",
+      "node": "Seat_Cargo_Bike",
+      "sku": "SEAT-CBIKE",
+      "price": 0,
+      "status": "available",
+      "description": "Seat for cargo bike"
+    },
+    {
+      "id": "body-sidestepsm",
+      "name": "Side Steps Small",
+      "category": "Body",
+      "glb": "body.glb",
+      "node": "Body_SideStepSm",
+      "sku": "BODY-STEPS",
+      "price": 199,
+      "status": "available",
+      "description": "Foot side steps Small"
     },
     {
       "id": "body-sidesteplg",
@@ -158,9 +445,53 @@
       "glb": "body.glb",
       "node": "Body_SideStepLg",
       "sku": "BODY-STEPL",
-      "price": 249,
+      "price": 219,
       "status": "available",
       "description": "Foot side steps Large"
+    },
+    {
+      "id": "body-flatbedsm",
+      "name": "Flat Bed Small",
+      "category": "Body",
+      "glb": "body.glb",
+      "node": "Body_FlatBedSm",
+      "sku": "BODY-STEPS",
+      "price": 199,
+      "status": "available",
+      "description": "Flat bed Small"
+    },
+    {
+      "id": "body-flatbedlg",
+      "name": "Flat Bed Large",
+      "category": "Body",
+      "glb": "body.glb",
+      "node": "Body_FlatBedLg",
+      "sku": "BODY-STEPL",
+      "price": 219,
+      "status": "available",
+      "description": "Flat bed Large"
+    },
+    {
+      "id": "body-frontrack",
+      "name": "Front Rack",
+      "category": "Body",
+      "glb": "body.glb",
+      "node": "Body_FrontRack",
+      "sku": "BODY-FRACK",
+      "price": 249,
+      "status": "available",
+      "description": "Cargo front rack"
+    },
+    {
+      "id": "body-rearack",
+      "name": "Rear Rack",
+      "category": "Body",
+      "glb": "body.glb",
+      "node": "Body_RearRack",
+      "sku": "BODY-RRACK",
+      "price": 249,
+      "status": "available",
+      "description": "Cargo rear rack"
     },
     {
       "id": "body-fenders",
@@ -169,7 +500,7 @@
       "glb": "body.glb",
       "node": "Body_Fenders",
       "sku": "BODY-FEND",
-      "price": 179,
+      "price": 549,
       "status": "available",
       "description": "Wheel fenders"
     },
@@ -179,7 +510,7 @@
       "category": "Body",
       "glb": "body.glb",
       "node": "Body_FrontBumper",
-      "sku": "BODY-FBUMP",
+      "sku": "BODY-BUMP",
       "price": 299,
       "status": "available",
       "description": "Multifunctional front bumper"
@@ -190,56 +521,146 @@
       "category": "Body",
       "glb": "body.glb",
       "node": "Body_RearBumper",
-      "sku": "BODY-RBUMP",
+      "sku": "BODY-BUMP",
       "price": 299,
       "status": "available",
       "description": "Multifunctional rear bumper"
     },
     {
-      "id": "wb-1130",
-      "name": "Short Wheelbase 1130",
-      "category": "Wheelbase",
-      "glb": "wb.glb",
-      "node": "WB_1130",
-      "sku": "SKU-000",
-      "price": 999,
-      "status": "active",
-      "description": ""
+      "id": "body-frontbumperop",
+      "name": "Front BumperOP",
+      "category": "Body",
+      "glb": "body.glb",
+      "node": "Body_FrontBumperOP",
+      "sku": "BODY-BUMP",
+      "price": 299,
+      "status": "available",
+      "description": "Multifunctional front bumper open"
     },
     {
-      "id": "motor-a-1130",
-      "name": "Motor A 1130",
-      "category": "Motor",
-      "glb": "motor.glb",
-      "node": "Motor_A_1130",
-      "sku": "MOT-A-1130",
-      "price": 899,
+      "id": "body-rearbumperop",
+      "name": "Rear BumperOP",
+      "category": "Body",
+      "glb": "body.glb",
+      "node": "Body_RearBumperOP",
+      "sku": "BODY-BUMP",
+      "price": 299,
       "status": "available",
-      "description": "Motor Type A for Short wheelbase"
+      "description": "Multifunctional rear bumper open"
     },
     {
-      "id": "tire-offroad-1130",
-      "name": "Offroad Tires 1130",
-      "category": "Tire",
-      "glb": "tire.glb",
-      "node": "Tire_Offroad_1130",
-      "sku": "TIRE-OFF-1130",
-      "price": 499,
+      "id": "topbody-lsv",
+      "name": "Top Body LSV",
+      "category": "Topbody",
+      "glb": "topbody.glb",
+      "node": "Topbody_LSV",
+      "sku": "TOPBODY-LSV",
+      "price": 2099,
       "status": "available",
-      "description": "All-terrain tires for Short wheelbase"
+      "description": "Low Speed vehicle body kit"
+    },
+    {
+      "id": "topbody-golf",
+      "name": "Top Body Golf Cart",
+      "category": "Topbody",
+      "glb": "topbody.glb",
+      "node": "Topbody_GolfCart",
+      "sku": "TOPBODY-GOLF",
+      "price": 3099,
+      "status": "available",
+      "description": "Golf Cart Body kit with 2 passenger seats"
+    },
+    {
+      "id": "topbody-cargobike",
+      "name": "Top Body Cargo Bike",
+      "category": "Topbody",
+      "glb": "topbody.glb",
+      "node": "Topbody_Cargobike",
+      "sku": "TOPBODY-CBIKE",
+      "price": 2399,
+      "status": "available",
+      "description": "Cargo bike body kit"
+    },
+    {
+      "id": "topbody-cargobike-l",
+      "name": "Top Body Cargo Bike Long",
+      "category": "Topbody",
+      "glb": "topbody.glb",
+      "node": "Topbody_Cargobike_Long",
+      "sku": "TOPBODY-CBIKE-L",
+      "price": 2399,
+      "status": "available",
+      "description": "Cargo bike long body"
+    },
+    {
+      "id": "acc-winch",
+      "name": "Winch",
+      "category": "Accessories",
+      "glb": "accessories.glb",
+      "node": "Acc_Winch",
+      "sku": "ACC-WINCH",
+      "price": 299,
+      "status": "available",
+      "description": "Front-mounted winch"
+    },
+    {
+      "id": "acc-hitch",
+      "name": "Hitch",
+      "category": "Accessories",
+      "glb": "accessories.glb",
+      "node": "Acc_Hitch",
+      "sku": "ACC-HITCH",
+      "price": 249,
+      "status": "available",
+      "description": "Rear Tow Hitch"
+    },
+    {
+      "id": "acc-lr-btry",
+      "name": "Long Range Battery",
+      "category": "Accessories",
+      "glb": "",
+      "node": "n/a",
+      "sku": "ACC-LR-BTRY",
+      "price": 1499,
+      "status": "available",
+      "description": "Long Range Battery"
     }
   ],
   "rules": [
     {
-      "ifPart": "Part_ID that triggers the rule",
-      "relation": "REQUIRES or EXCLUDES",
-      "thenPart": "Part_ID that is affected",
-      "message": "Optional message shown to user"
+      "ifPart": "wb-1130",
+      "relation": "REQUIRES",
+      "thenPart": "block-single",
+      "message": ""
+    },
+    {
+      "ifPart": "wb-1130",
+      "relation": "EXCLUDES",
+      "thenPart": "wb-1330",
+      "message": ""
     },
     {
       "ifPart": "wb-1330",
       "relation": "REQUIRES",
       "thenPart": "block-single",
+      "message": ""
+    },
+    {
+      "ifPart": "wb-1330",
+      "relation": "EXCLUDES",
+      "thenPart": "wb-1130",
+      "message": ""
+    },
+    {
+      "ifPart": "motor-a-1130",
+      "relation": "REQUIRES",
+      "thenPart": "wb-1130",
+      "message": ""
+    },
+    {
+      "ifPart": "motor-a-1130",
+      "relation": "EXCLUDES",
+      "thenPart": "motor-a-1330",
       "message": ""
     },
     {
@@ -249,21 +670,609 @@
       "message": ""
     },
     {
+      "ifPart": "motor-a-1330",
+      "relation": "EXCLUDES",
+      "thenPart": "motor-a-1130",
+      "message": ""
+    },
+    {
+      "ifPart": "tire-urban-1130",
+      "relation": "REQUIRES",
+      "thenPart": "motor-a-1130",
+      "message": ""
+    },
+    {
+      "ifPart": "tire-urban-1130",
+      "relation": "EXCLUDES",
+      "thenPart": "tire-offroad-1130",
+      "message": ""
+    },
+    {
+      "ifPart": "tire-urban-1130",
+      "relation": "EXCLUDES",
+      "thenPart": "tire-urban-1330",
+      "message": ""
+    },
+    {
+      "ifPart": "tire-urban-1130",
+      "relation": "EXCLUDES",
+      "thenPart": "tire-offroad-1330",
+      "message": ""
+    },
+    {
+      "ifPart": "tire-offroad-1130",
+      "relation": "REQUIRES",
+      "thenPart": "motor-a-1130",
+      "message": ""
+    },
+    {
+      "ifPart": "tire-offroad-1130",
+      "relation": "EXCLUDES",
+      "thenPart": "tire-urban-1130",
+      "message": ""
+    },
+    {
+      "ifPart": "tire-offroad-1130",
+      "relation": "EXCLUDES",
+      "thenPart": "tire-urban-1330",
+      "message": ""
+    },
+    {
+      "ifPart": "tire-offroad-1130",
+      "relation": "EXCLUDES",
+      "thenPart": "tire-offroad-1330",
+      "message": ""
+    },
+    {
+      "ifPart": "tire-urban-1330",
+      "relation": "REQUIRES",
+      "thenPart": "motor-a-1330",
+      "message": ""
+    },
+    {
+      "ifPart": "tire-urban-1330",
+      "relation": "EXCLUDES",
+      "thenPart": "tire-urban-1130",
+      "message": ""
+    },
+    {
+      "ifPart": "tire-urban-1330",
+      "relation": "EXCLUDES",
+      "thenPart": "tire-offroad-1130",
+      "message": ""
+    },
+    {
+      "ifPart": "tire-urban-1330",
+      "relation": "EXCLUDES",
+      "thenPart": "tire-offroad-1330",
+      "message": ""
+    },
+    {
       "ifPart": "tire-offroad-1330",
       "relation": "REQUIRES",
       "thenPart": "motor-a-1330",
       "message": ""
     },
     {
-      "ifPart": "control-column",
+      "ifPart": "tire-offroad-1330",
+      "relation": "EXCLUDES",
+      "thenPart": "tire-urban-1130",
+      "message": ""
+    },
+    {
+      "ifPart": "tire-offroad-1330",
+      "relation": "EXCLUDES",
+      "thenPart": "tire-offroad-1130",
+      "message": ""
+    },
+    {
+      "ifPart": "tire-offroad-1330",
+      "relation": "EXCLUDES",
+      "thenPart": "tire-urban-1330",
+      "message": ""
+    },
+    {
+      "ifPart": "column-90",
       "relation": "REQUIRES",
       "thenPart": "block-single",
       "message": ""
     },
     {
-      "ifPart": "seat-leaning",
+      "ifPart": "column-90",
+      "relation": "EXCLUDES",
+      "thenPart": "column-65",
+      "message": ""
+    },
+    {
+      "ifPart": "column-90",
+      "relation": "EXCLUDES",
+      "thenPart": "column-65-L",
+      "message": ""
+    },
+    {
+      "ifPart": "column-90",
+      "relation": "EXCLUDES",
+      "thenPart": "column-45",
+      "message": ""
+    },
+    {
+      "ifPart": "column-65",
       "relation": "REQUIRES",
       "thenPart": "block-single",
+      "message": ""
+    },
+    {
+      "ifPart": "column-65",
+      "relation": "EXCLUDES",
+      "thenPart": "column-90",
+      "message": ""
+    },
+    {
+      "ifPart": "column-65",
+      "relation": "EXCLUDES",
+      "thenPart": "column-65-L",
+      "message": ""
+    },
+    {
+      "ifPart": "column-65",
+      "relation": "EXCLUDES",
+      "thenPart": "column-45",
+      "message": ""
+    },
+    {
+      "ifPart": "column-65-L",
+      "relation": "REQUIRES",
+      "thenPart": "block-single",
+      "message": ""
+    },
+    {
+      "ifPart": "column-65-L",
+      "relation": "EXCLUDES",
+      "thenPart": "column-90",
+      "message": ""
+    },
+    {
+      "ifPart": "column-65-L",
+      "relation": "EXCLUDES",
+      "thenPart": "column-65",
+      "message": ""
+    },
+    {
+      "ifPart": "column-65-L",
+      "relation": "EXCLUDES",
+      "thenPart": "column-45",
+      "message": ""
+    },
+    {
+      "ifPart": "column-45",
+      "relation": "REQUIRES",
+      "thenPart": "block-single",
+      "message": ""
+    },
+    {
+      "ifPart": "column-45",
+      "relation": "EXCLUDES",
+      "thenPart": "column-90",
+      "message": ""
+    },
+    {
+      "ifPart": "column-45",
+      "relation": "EXCLUDES",
+      "thenPart": "column-65",
+      "message": ""
+    },
+    {
+      "ifPart": "column-45",
+      "relation": "EXCLUDES",
+      "thenPart": "column-65-L",
+      "message": ""
+    },
+    {
+      "ifPart": "handle-bar-90-rev",
+      "relation": "EXCLUDES",
+      "thenPart": "handle-bar-65",
+      "message": ""
+    },
+    {
+      "ifPart": "handle-bar-90-rev",
+      "relation": "EXCLUDES",
+      "thenPart": "handle-bar-65-sxs",
+      "message": ""
+    },
+    {
+      "ifPart": "handle-bar-90-rev",
+      "relation": "EXCLUDES",
+      "thenPart": "handle-bar-65-L",
+      "message": ""
+    },
+    {
+      "ifPart": "handle-bar-90-rev",
+      "relation": "EXCLUDES",
+      "thenPart": "handle-sw-45",
+      "message": ""
+    },
+    {
+      "ifPart": "handle-bar-90-rev",
+      "relation": "EXCLUDES",
+      "thenPart": "handle-sw-65",
+      "message": ""
+    },
+    {
+      "ifPart": "handle-bar-90-rev",
+      "relation": "EXCLUDES",
+      "thenPart": "handle-sw-65-sxs",
+      "message": ""
+    },
+    {
+      "ifPart": "handle-bar-65",
+      "relation": "REQUIRES",
+      "thenPart": "column-65",
+      "message": ""
+    },
+    {
+      "ifPart": "handle-bar-65",
+      "relation": "EXCLUDES",
+      "thenPart": "handle-bar-90-rev",
+      "message": ""
+    },
+    {
+      "ifPart": "handle-bar-65",
+      "relation": "EXCLUDES",
+      "thenPart": "handle-bar-65-sxs",
+      "message": ""
+    },
+    {
+      "ifPart": "handle-bar-65",
+      "relation": "EXCLUDES",
+      "thenPart": "handle-bar-65-L",
+      "message": ""
+    },
+    {
+      "ifPart": "handle-bar-65",
+      "relation": "EXCLUDES",
+      "thenPart": "handle-sw-45",
+      "message": ""
+    },
+    {
+      "ifPart": "handle-bar-65",
+      "relation": "EXCLUDES",
+      "thenPart": "handle-sw-65",
+      "message": ""
+    },
+    {
+      "ifPart": "handle-bar-65",
+      "relation": "EXCLUDES",
+      "thenPart": "handle-sw-65-sxs",
+      "message": ""
+    },
+    {
+      "ifPart": "handle-bar-65-sxs",
+      "relation": "REQUIRES",
+      "thenPart": "column-65",
+      "message": ""
+    },
+    {
+      "ifPart": "handle-bar-65-sxs",
+      "relation": "EXCLUDES",
+      "thenPart": "handle-bar-90-rev",
+      "message": ""
+    },
+    {
+      "ifPart": "handle-bar-65-sxs",
+      "relation": "EXCLUDES",
+      "thenPart": "handle-bar-65",
+      "message": ""
+    },
+    {
+      "ifPart": "handle-bar-65-sxs",
+      "relation": "EXCLUDES",
+      "thenPart": "handle-bar-65-L",
+      "message": ""
+    },
+    {
+      "ifPart": "handle-bar-65-sxs",
+      "relation": "EXCLUDES",
+      "thenPart": "handle-sw-45",
+      "message": ""
+    },
+    {
+      "ifPart": "handle-bar-65-sxs",
+      "relation": "EXCLUDES",
+      "thenPart": "handle-sw-65",
+      "message": ""
+    },
+    {
+      "ifPart": "handle-bar-65-sxs",
+      "relation": "EXCLUDES",
+      "thenPart": "handle-sw-65-sxs",
+      "message": ""
+    },
+    {
+      "ifPart": "handle-bar-65-L",
+      "relation": "REQUIRES",
+      "thenPart": "column-65-L",
+      "message": ""
+    },
+    {
+      "ifPart": "handle-bar-65-L",
+      "relation": "EXCLUDES",
+      "thenPart": "handle-bar-90-rev",
+      "message": ""
+    },
+    {
+      "ifPart": "handle-bar-65-L",
+      "relation": "EXCLUDES",
+      "thenPart": "handle-bar-65",
+      "message": ""
+    },
+    {
+      "ifPart": "handle-bar-65-L",
+      "relation": "EXCLUDES",
+      "thenPart": "handle-bar-65-sxs",
+      "message": ""
+    },
+    {
+      "ifPart": "handle-bar-65-L",
+      "relation": "EXCLUDES",
+      "thenPart": "handle-sw-45",
+      "message": ""
+    },
+    {
+      "ifPart": "handle-bar-65-L",
+      "relation": "EXCLUDES",
+      "thenPart": "handle-sw-65",
+      "message": ""
+    },
+    {
+      "ifPart": "handle-bar-65-L",
+      "relation": "EXCLUDES",
+      "thenPart": "handle-sw-65-sxs",
+      "message": ""
+    },
+    {
+      "ifPart": "handle-sw-45",
+      "relation": "REQUIRES",
+      "thenPart": "column-45",
+      "message": ""
+    },
+    {
+      "ifPart": "handle-sw-45",
+      "relation": "EXCLUDES",
+      "thenPart": "handle-bar-90-rev",
+      "message": ""
+    },
+    {
+      "ifPart": "handle-sw-45",
+      "relation": "EXCLUDES",
+      "thenPart": "handle-bar-65",
+      "message": ""
+    },
+    {
+      "ifPart": "handle-sw-45",
+      "relation": "EXCLUDES",
+      "thenPart": "handle-bar-65-sxs",
+      "message": ""
+    },
+    {
+      "ifPart": "handle-sw-45",
+      "relation": "EXCLUDES",
+      "thenPart": "handle-bar-65-L",
+      "message": ""
+    },
+    {
+      "ifPart": "handle-sw-45",
+      "relation": "EXCLUDES",
+      "thenPart": "handle-sw-65",
+      "message": ""
+    },
+    {
+      "ifPart": "handle-sw-45",
+      "relation": "EXCLUDES",
+      "thenPart": "handle-sw-65-sxs",
+      "message": ""
+    },
+    {
+      "ifPart": "handle-sw-65",
+      "relation": "REQUIRES",
+      "thenPart": "column-65",
+      "message": ""
+    },
+    {
+      "ifPart": "handle-sw-65",
+      "relation": "EXCLUDES",
+      "thenPart": "handle-bar-90-rev",
+      "message": ""
+    },
+    {
+      "ifPart": "handle-sw-65",
+      "relation": "EXCLUDES",
+      "thenPart": "handle-bar-65",
+      "message": ""
+    },
+    {
+      "ifPart": "handle-sw-65",
+      "relation": "EXCLUDES",
+      "thenPart": "handle-bar-65-sxs",
+      "message": ""
+    },
+    {
+      "ifPart": "handle-sw-65",
+      "relation": "EXCLUDES",
+      "thenPart": "handle-bar-65-L",
+      "message": ""
+    },
+    {
+      "ifPart": "handle-sw-65",
+      "relation": "EXCLUDES",
+      "thenPart": "handle-sw-45",
+      "message": ""
+    },
+    {
+      "ifPart": "handle-sw-65",
+      "relation": "EXCLUDES",
+      "thenPart": "handle-sw-65-sxs",
+      "message": ""
+    },
+    {
+      "ifPart": "handle-sw-65-sxs",
+      "relation": "REQUIRES",
+      "thenPart": "column-65",
+      "message": ""
+    },
+    {
+      "ifPart": "handle-sw-65-sxs",
+      "relation": "EXCLUDES",
+      "thenPart": "handle-bar-90-rev",
+      "message": ""
+    },
+    {
+      "ifPart": "handle-sw-65-sxs",
+      "relation": "EXCLUDES",
+      "thenPart": "handle-bar-65",
+      "message": ""
+    },
+    {
+      "ifPart": "handle-sw-65-sxs",
+      "relation": "EXCLUDES",
+      "thenPart": "handle-bar-65-sxs",
+      "message": ""
+    },
+    {
+      "ifPart": "handle-sw-65-sxs",
+      "relation": "EXCLUDES",
+      "thenPart": "handle-bar-65-L",
+      "message": ""
+    },
+    {
+      "ifPart": "handle-sw-65-sxs",
+      "relation": "EXCLUDES",
+      "thenPart": "handle-sw-45",
+      "message": ""
+    },
+    {
+      "ifPart": "handle-sw-65-sxs",
+      "relation": "EXCLUDES",
+      "thenPart": "handle-sw-65",
+      "message": ""
+    },
+    {
+      "ifPart": "seat-lean",
+      "relation": "REQUIRES",
+      "thenPart": "block-single",
+      "message": ""
+    },
+    {
+      "ifPart": "seat-lean",
+      "relation": "EXCLUDES",
+      "thenPart": "seat-bucket",
+      "message": ""
+    },
+    {
+      "ifPart": "seat-lean",
+      "relation": "EXCLUDES",
+      "thenPart": "seat-full",
+      "message": ""
+    },
+    {
+      "ifPart": "seat-lean",
+      "relation": "EXCLUDES",
+      "thenPart": "seat-sxs",
+      "message": ""
+    },
+    {
+      "ifPart": "seat-bucket",
+      "relation": "REQUIRES",
+      "thenPart": "block-single",
+      "message": ""
+    },
+    {
+      "ifPart": "seat-bucket",
+      "relation": "EXCLUDES",
+      "thenPart": "seat-lean",
+      "message": ""
+    },
+    {
+      "ifPart": "seat-bucket",
+      "relation": "EXCLUDES",
+      "thenPart": "seat-full",
+      "message": ""
+    },
+    {
+      "ifPart": "seat-bucket",
+      "relation": "EXCLUDES",
+      "thenPart": "seat-sxs",
+      "message": ""
+    },
+    {
+      "ifPart": "seat-full",
+      "relation": "REQUIRES",
+      "thenPart": "block-single",
+      "message": ""
+    },
+    {
+      "ifPart": "seat-full",
+      "relation": "EXCLUDES",
+      "thenPart": "seat-lean",
+      "message": ""
+    },
+    {
+      "ifPart": "seat-full",
+      "relation": "EXCLUDES",
+      "thenPart": "seat-bucket",
+      "message": ""
+    },
+    {
+      "ifPart": "seat-full",
+      "relation": "EXCLUDES",
+      "thenPart": "seat-sxs",
+      "message": ""
+    },
+    {
+      "ifPart": "seat-sxs",
+      "relation": "REQUIRES",
+      "thenPart": "block-single",
+      "message": ""
+    },
+    {
+      "ifPart": "seat-sxs",
+      "relation": "EXCLUDES",
+      "thenPart": "seat-lean",
+      "message": ""
+    },
+    {
+      "ifPart": "seat-sxs",
+      "relation": "EXCLUDES",
+      "thenPart": "seat-bucket",
+      "message": ""
+    },
+    {
+      "ifPart": "seat-sxs",
+      "relation": "EXCLUDES",
+      "thenPart": "seat-full",
+      "message": ""
+    },
+    {
+      "ifPart": "body-sidestepsm",
+      "relation": "REQUIRES",
+      "thenPart": "block-single",
+      "message": ""
+    },
+    {
+      "ifPart": "body-sidestepsm",
+      "relation": "EXCLUDES",
+      "thenPart": "body-sidesteplg",
+      "message": ""
+    },
+    {
+      "ifPart": "body-sidestepsm",
+      "relation": "EXCLUDES",
+      "thenPart": "body-flatbedsm",
+      "message": ""
+    },
+    {
+      "ifPart": "body-sidestepsm",
+      "relation": "EXCLUDES",
+      "thenPart": "body-flatbedlg",
       "message": ""
     },
     {
@@ -273,9 +1282,129 @@
       "message": ""
     },
     {
+      "ifPart": "body-sidesteplg",
+      "relation": "EXCLUDES",
+      "thenPart": "body-sidestepsm",
+      "message": ""
+    },
+    {
+      "ifPart": "body-sidesteplg",
+      "relation": "EXCLUDES",
+      "thenPart": "body-flatbedsm",
+      "message": ""
+    },
+    {
+      "ifPart": "body-sidesteplg",
+      "relation": "EXCLUDES",
+      "thenPart": "body-flatbedlg",
+      "message": ""
+    },
+    {
+      "ifPart": "body-flatbedsm",
+      "relation": "REQUIRES",
+      "thenPart": "block-single",
+      "message": ""
+    },
+    {
+      "ifPart": "body-flatbedsm",
+      "relation": "EXCLUDES",
+      "thenPart": "body-flatbedlg",
+      "message": ""
+    },
+    {
+      "ifPart": "body-flatbedsm",
+      "relation": "EXCLUDES",
+      "thenPart": "body-sidestepsm",
+      "message": ""
+    },
+    {
+      "ifPart": "body-flatbedsm",
+      "relation": "EXCLUDES",
+      "thenPart": "body-sidesteplg",
+      "message": ""
+    },
+    {
+      "ifPart": "body-flatbedlg",
+      "relation": "REQUIRES",
+      "thenPart": "block-single",
+      "message": ""
+    },
+    {
+      "ifPart": "body-flatbedlg",
+      "relation": "EXCLUDES",
+      "thenPart": "body-flatbedsm",
+      "message": ""
+    },
+    {
+      "ifPart": "body-flatbedlg",
+      "relation": "EXCLUDES",
+      "thenPart": "body-sidestepsm",
+      "message": ""
+    },
+    {
+      "ifPart": "body-flatbedlg",
+      "relation": "EXCLUDES",
+      "thenPart": "body-sidesteplg",
+      "message": ""
+    },
+    {
+      "ifPart": "body-frontrack",
+      "relation": "REQUIRES",
+      "thenPart": "body-fenders",
+      "message": ""
+    },
+    {
+      "ifPart": "body-frontrack",
+      "relation": "EXCLUDES",
+      "thenPart": "topbody-lsv",
+      "message": ""
+    },
+    {
+      "ifPart": "body-frontrack",
+      "relation": "EXCLUDES",
+      "thenPart": "topbody-golf",
+      "message": ""
+    },
+    {
+      "ifPart": "body-frontrack",
+      "relation": "EXCLUDES",
+      "thenPart": "topbody-cargobike",
+      "message": ""
+    },
+    {
+      "ifPart": "body-rearack",
+      "relation": "REQUIRES",
+      "thenPart": "body-fenders",
+      "message": ""
+    },
+    {
+      "ifPart": "body-rearack",
+      "relation": "EXCLUDES",
+      "thenPart": "topbody-lsv",
+      "message": ""
+    },
+    {
+      "ifPart": "body-rearack",
+      "relation": "EXCLUDES",
+      "thenPart": "topbody-golf",
+      "message": ""
+    },
+    {
+      "ifPart": "body-rearack",
+      "relation": "EXCLUDES",
+      "thenPart": "topbody-cargobike",
+      "message": ""
+    },
+    {
       "ifPart": "body-fenders",
       "relation": "REQUIRES",
       "thenPart": "block-single",
+      "message": ""
+    },
+    {
+      "ifPart": "body-fenders",
+      "relation": "REQUIRES",
+      "thenPart": "body-sidesteplg",
       "message": ""
     },
     {
@@ -291,25 +1420,180 @@
       "message": ""
     },
     {
-      "ifPart": "wb-1130",
+      "ifPart": "body-frontbumperop",
       "relation": "REQUIRES",
       "thenPart": "block-single",
       "message": ""
     },
     {
-      "ifPart": "motor-a-1130",
+      "ifPart": "body-rearbumperop",
       "relation": "REQUIRES",
-      "thenPart": "wb-1130",
+      "thenPart": "block-single",
       "message": ""
     },
     {
-      "ifPart": "tire-offroad-1130",
+      "ifPart": "body-frontbumperop",
+      "relation": "EXCLUDES",
+      "thenPart": "acc-winch",
+      "message": ""
+    },
+    {
+      "ifPart": "body-rearbumperop",
+      "relation": "EXCLUDES",
+      "thenPart": "acc-hitch",
+      "message": ""
+    },
+    {
+      "ifPart": "topbody-lsv",
       "relation": "REQUIRES",
-      "thenPart": "motor-a-1130",
+      "thenPart": "body-fenders",
+      "message": ""
+    },
+    {
+      "ifPart": "topbody-lsv",
+      "relation": "EXCLUDES",
+      "thenPart": "body-frontrack",
+      "message": ""
+    },
+    {
+      "ifPart": "topbody-lsv",
+      "relation": "EXCLUDES",
+      "thenPart": "body-rearack",
+      "message": ""
+    },
+    {
+      "ifPart": "topbody-golf",
+      "relation": "REQUIRES",
+      "thenPart": "body-fenders",
+      "message": ""
+    },
+    {
+      "ifPart": "topbody-golf",
+      "relation": "EXCLUDES",
+      "thenPart": "body-frontrack",
+      "message": ""
+    },
+    {
+      "ifPart": "topbody-golf",
+      "relation": "EXCLUDES",
+      "thenPart": "body-rearack",
+      "message": ""
+    },
+    {
+      "ifPart": "topbody-cargobike",
+      "relation": "REQUIRES",
+      "thenPart": "body-fenders",
+      "message": ""
+    },
+    {
+      "ifPart": "topbody-cargobike",
+      "relation": "EXCLUDES",
+      "thenPart": "body-frontrack",
+      "message": ""
+    },
+    {
+      "ifPart": "topbody-cargobike",
+      "relation": "EXCLUDES",
+      "thenPart": "body-rearack",
+      "message": ""
+    },
+    {
+      "ifPart": "acc-winch",
+      "relation": "REQUIRES",
+      "thenPart": "block-single",
+      "message": ""
+    },
+    {
+      "ifPart": "acc-hitch",
+      "relation": "REQUIRES",
+      "thenPart": "block-single",
+      "message": ""
+    },
+    {
+      "ifPart": "acc-winch",
+      "relation": "EXCLUDES",
+      "thenPart": "body-frontbumperop",
+      "message": ""
+    },
+    {
+      "ifPart": "acc-hitch",
+      "relation": "EXCLUDES",
+      "thenPart": "body-rearbumperop",
       "message": ""
     }
   ],
   "presets": [
+    {
+      "name": "Intro",
+      "description": "Intro",
+      "parts": {
+        "Block": "block-single",
+        "Wheelbase": "wb-1330",
+        "Tire": "tire-offroad-1330",
+        "Motor": "motor-a-1330"
+      }
+    },
+    {
+      "name": "4x4 Scooter",
+      "description": "Basic Urban Mobility",
+      "parts": {
+        "Block": "block-single",
+        "Wheelbase": "wb-1130",
+        "Tire": "tire-offroad-1130",
+        "Motor": "motor-a-1130",
+        "Column": "column-65-L",
+        "Handle": "handle-bar-65-L",
+        "Seat": "seat-leaning",
+        "Body": "body-sidestepsm"
+      }
+    },
+    {
+      "name": "Buggy",
+      "description": "Recreational Buggy",
+      "parts": {
+        "Block": "block-single",
+        "Wheelbase": "wb-1130",
+        "Tire": "tire-urban-1130",
+        "Motor": "motor-a-1130",
+        "Column": "column-45",
+        "Handle": "handle-sw-45",
+        "Seat": "seat-bucket",
+        "Body": "body-sidestepsm"
+      }
+    },
+    {
+      "name": "Platform",
+      "description": "Utility Platform",
+      "parts": {
+        "Block": "block-single",
+        "Wheelbase": "wb-1130",
+        "Tire": "tire-urban-1130",
+        "Motor": "motor-a-1130",
+        "Column": "column-90",
+        "Handle": "handle-bar-90-rev",
+        "Body": [
+          "body-flatbedsm",
+          "body-frontbumperop"
+        ]
+      }
+    },
+    {
+      "name": "Transporter",
+      "description": "Transporter",
+      "parts": {
+        "Block": "block-single",
+        "Wheelbase": "wb-1330",
+        "Tire": "tire-offroad-1330",
+        "Motor": "motor-a-1330",
+        "Column": "column-90",
+        "Handle": "handle-bar-90-rev",
+        "Body": [
+          "body-flatbedlg",
+          "body-frontbumperop",
+          "body-rearbumperop"
+        ]
+      }
+    },
     {
       "name": "ATV",
       "description": "All-Terrain Vehicle",
@@ -318,12 +1602,9 @@
         "Wheelbase": "wb-1330",
         "Tire": "tire-offroad-1330",
         "Motor": "motor-a-1330",
-        "Control": [
-          "control-column",
-          "control-handlebar"
-        ],
-        "Seat": "seat-leaning",
-        "Wheels": "wheels-urban",
+        "Column": "column-65",
+        "Handle": "handle-bar-65",
+        "Seat": "seat-full",
         "Body": [
           "body-sidesteplg",
           "body-fenders",
@@ -333,17 +1614,85 @@
       }
     },
     {
-      "name": "Essential",
-      "description": "Basic Urban Mobility",
+      "name": "SXS",
+      "description": "Side by Side",
       "parts": {
         "Block": "block-single",
         "Wheelbase": "wb-1330",
         "Tire": "tire-offroad-1330",
         "Motor": "motor-a-1330",
-        "Control": "control-handlebar",
-        "Seat": "seat-leaning",
-        "Wheels": "wheels-urban",
-        "Body": "body-sidesteplg"
+        "Column": "column-65",
+        "Handle": "handle-bar-65-sxs",
+        "Seat": "seat-sxs",
+        "Body": [
+          "body-flatbedlg",
+          "body-fenders",
+          "body-frontbumper"
+        ],
+        "Accessories": [
+          "acc-winch",
+          "acc-hitch"
+        ]
+      }
+    },
+    {
+      "name": "Golfcart",
+      "description": "Golfcart",
+      "parts": {
+        "Block": "block-single",
+        "Wheelbase": "wb-1330",
+        "Tire": "tire-offroad-1330",
+        "Motor": "motor-a-1330",
+        "Column": "column-65",
+        "Handle": "handle-sw-65-sxs",
+        "Seat": "seat-sxs",
+        "Body": [
+          "body-flatbedlg",
+          "body-fenders",
+          "body-frontbumper",
+          "body-frontrack"
+        ],
+        "Topbody": "topbody-golf"
+      }
+    },
+    {
+      "name": "LSV",
+      "description": "Commuter Vehicle",
+      "parts": {
+        "Block": "block-single",
+        "Wheelbase": "wb-1330",
+        "Tire": "tire-offroad-1330",
+        "Motor": "motor-a-1330",
+        "Column": "column-45",
+        "Handle": "handle-sw-45",
+        "Seat": "seat-full",
+        "Body": [
+          "body-sidesteplg",
+          "body-fenders",
+          "body-frontbumper",
+          "body-rearbumper"
+        ],
+        "Topbody": "topbody-lsv"
+      }
+    },
+    {
+      "name": "Cargo Bike",
+      "description": "Pedal-Electric Assisted Vehicle",
+      "parts": {
+        "Block": "block-single",
+        "Wheelbase": "wb-1330",
+        "Tire": "tire-urban-1330",
+        "Motor": "motor-a-1330",
+        "Column": "column-cycling",
+        "Handle": "handle-cycling",
+        "Seat": "seat-bike",
+        "Body": [
+          "body-sidesteplg",
+          "body-fenders",
+          "body-frontbumper",
+          "body-rearbumper"
+        ],
+        "Topbody": "topbody-cargobike"
       }
     }
   ]

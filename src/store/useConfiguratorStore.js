@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import matrix from '../data/configMatrix.json';
+import { enforceRules } from '../utils/rulesEngine';
 
 // Updated to a simpler comma-separated string of IDs
 const getInitialStateFromURL = () => {
@@ -29,9 +30,6 @@ const toArray = (val) => {
     if (!val) return [];
     return Array.isArray(val) ? val : [val];
 };
-
-const getPartById = (matrixData, partId) => matrixData.parts.find((p) => p.id === partId);
-const getCategoryById = (matrixData, categoryId) => matrixData.categories.find((c) => c.id === categoryId);
 
 const getCompositeCategories = (matrixData) => {
     const composite = new Set();
@@ -90,105 +88,6 @@ const getDefaultSelection = (matrixData) => {
     return defaults;
 };
 
-const addPartToSelection = (selectedParts, partId, matrixData) => {
-    const part = getPartById(matrixData, partId);
-    if (!part) return selectedParts;
-
-    const cat = getCategoryById(matrixData, part.category);
-    if (!cat) return selectedParts;
-
-    const next = { ...selectedParts };
-    const isArraySelection = cat.type === 'multi' || compositeCategories.has(cat.id);
-
-    if (isArraySelection) {
-        const arr = toArray(next[cat.id]);
-        if (!arr.includes(partId)) next[cat.id] = [...arr, partId];
-        else next[cat.id] = arr;
-    } else {
-        next[cat.id] = partId;
-    }
-
-    return next;
-};
-
-const applyRequiresClosure = (selectedParts, rootPartIds, matrixData) => {
-    let next = { ...selectedParts };
-    const queue = [...new Set(toArray(rootPartIds))];
-    const visited = new Set();
-
-    while (queue.length) {
-        const current = queue.shift();
-        if (!current || visited.has(current)) continue;
-        visited.add(current);
-
-        const rules = matrixData.rules.filter((r) => r.relation === 'REQUIRES' && r.ifPart === current);
-        rules.forEach((r) => {
-            const requiredId = r.thenPart;
-            if (!requiredId) return;
-
-            next = addPartToSelection(next, requiredId, matrixData);
-
-            queue.push(requiredId);
-        });
-    }
-
-    return next;
-};
-
-const getSelectedPartIds = (selectedParts) => {
-    const ids = [];
-    Object.values(selectedParts || {}).forEach((val) => {
-        toArray(val).forEach((id) => {
-            if (id) ids.push(id);
-        });
-    });
-    return ids;
-};
-
-const removePartFromSelection = (selectedParts, partId, matrixData) => {
-    const part = getPartById(matrixData, partId);
-    if (!part) return selectedParts;
-
-    const cat = getCategoryById(matrixData, part.category);
-    if (!cat) return selectedParts;
-
-    const next = { ...selectedParts };
-    const isArraySelection = cat.type === 'multi' || compositeCategories.has(cat.id);
-
-    if (isArraySelection) {
-        const arr = toArray(next[cat.id]).filter((id) => id !== partId);
-        if (arr.length === 0) delete next[cat.id];
-        else next[cat.id] = arr;
-    } else {
-        if (next[cat.id] === partId) delete next[cat.id];
-    }
-
-    return next;
-};
-
-const pruneInvalidSelections = (selectedParts, matrixData) => {
-    let next = normalizeSelectedParts(selectedParts, matrixData);
-    let changed = true;
-
-    while (changed) {
-        changed = false;
-        const selectedIds = getSelectedPartIds(next);
-        const selectedSet = new Set(selectedIds);
-
-        for (const id of selectedIds) {
-            const requiresRules = matrixData.rules.filter((r) => r.relation === 'REQUIRES' && r.ifPart === id);
-            const isValid = requiresRules.every((r) => !r.thenPart || selectedSet.has(r.thenPart));
-            if (!isValid) {
-                next = removePartFromSelection(next, id, matrixData);
-                changed = true;
-                break;
-            }
-        }
-    }
-
-    return next;
-};
-
 const updateURL = (selectedParts) => {
     const pairs = Object.entries(selectedParts)
         .filter(([_, value]) => value && (Array.isArray(value) ? value.length > 0 : true))
@@ -211,7 +110,7 @@ const updateURL = (selectedParts) => {
 
 const initialFromUrl = getInitialStateFromURL();
 const initialBase = normalizeSelectedParts(initialFromUrl || getDefaultSelection(matrix), matrix);
-const initialSelectedParts = applyRequiresClosure(initialBase, getSelectedPartIds(initialBase), matrix);
+const initialSelectedParts = enforceRules(initialBase, matrix);
 if (!initialFromUrl) {
     // Ensure a first-load render actually shows a baseline model and the URL is shareable.
     queueMicrotask(() => updateURL(initialSelectedParts));
@@ -223,12 +122,13 @@ const useConfiguratorStore = create((set, get) => ({
     currentPreset: null,
 
     resetConfig: () => {
-        const defaults = getDefaultSelection(matrix);
-        set({ 
-            selectedParts: defaults,
+        const defaults = normalizeSelectedParts(getDefaultSelection(matrix), matrix);
+        const next = enforceRules(defaults, matrix);
+        set({
+            selectedParts: next,
             currentPreset: null
         });
-        updateURL(defaults);
+        updateURL(next);
     },
 
     selectPart: (category, partId) => {
@@ -290,11 +190,10 @@ const useConfiguratorStore = create((set, get) => ({
 
             // Auto-apply REQUIRES rules so selections make sense (e.g. handlebar implies column).
             const normalized = normalizeSelectedParts(newSelected, matrix);
-            const afterRequires = applyRequiresClosure(normalized, partId, matrix);
-            const afterPrune = pruneInvalidSelections(afterRequires, matrix);
+            const afterRules = enforceRules(normalized, matrix);
 
-            updateURL(afterPrune);
-            return { selectedParts: afterPrune, currentPreset: null };
+            updateURL(afterRules);
+            return { selectedParts: afterRules, currentPreset: null };
         });
     },
 
@@ -303,7 +202,7 @@ const useConfiguratorStore = create((set, get) => ({
         if (!preset) return;
 
         const normalizedPreset = normalizeSelectedParts({ ...preset.parts }, matrix);
-        const withRequires = applyRequiresClosure(normalizedPreset, getSelectedPartIds(normalizedPreset), matrix);
+        const withRequires = enforceRules(normalizedPreset, matrix);
 
         set({
             currentPreset: presetName,
@@ -314,7 +213,7 @@ const useConfiguratorStore = create((set, get) => ({
 
     reset: () => {
         const defaults = normalizeSelectedParts(getDefaultSelection(matrix), matrix);
-        const withRequires = applyRequiresClosure(defaults, getSelectedPartIds(defaults), matrix);
+        const withRequires = enforceRules(defaults, matrix);
         set({ selectedParts: withRequires, currentPreset: null });
         updateURL(withRequires);
     },

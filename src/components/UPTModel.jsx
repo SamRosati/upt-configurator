@@ -2,6 +2,26 @@ import React, { Suspense } from 'react';
 import { useGLTF } from '@react-three/drei';
 import useConfiguratorStore from '../store/useConfiguratorStore';
 
+class AssetErrorBoundary extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = { hasError: false };
+    }
+
+    static getDerivedStateFromError() {
+        return { hasError: true };
+    }
+
+    componentDidCatch(error) {
+        console.warn('Failed to load GLB asset:', this.props.url, error);
+    }
+
+    render() {
+        if (this.state.hasError) return null;
+        return this.props.children;
+    }
+}
+
 const SingleAsset = ({ url, selectedPartNodeNames }) => {
     const { scene } = useGLTF(url);
 
@@ -83,12 +103,14 @@ const UPTModel = () => {
     return (
         <group>
             {assets.map((url) => (
-                <Suspense key={url} fallback={null}>
-                    <SingleAsset
-                        url={url}
-                        selectedPartNodeNames={glbPartNodes[url] ? Array.from(glbPartNodes[url]) : []}
-                    />
-                </Suspense>
+                <AssetErrorBoundary key={url} url={url}>
+                    <Suspense fallback={null}>
+                        <SingleAsset
+                            url={url}
+                            selectedPartNodeNames={glbPartNodes[url] ? Array.from(glbPartNodes[url]) : []}
+                        />
+                    </Suspense>
+                </AssetErrorBoundary>
             ))}
         </group>
     );

@@ -1,30 +1,19 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import useConfiguratorStore from '../store/useConfiguratorStore';
 import { getAvailableParts } from '../utils/rulesEngine';
+import { buildOrderedSteps } from '../utils/buildSteps';
 
 const toArray = (val) => (Array.isArray(val) ? val : val ? [val] : []);
 
-const LEVEL_TO_CATEGORIES = {
-    'Main Block': ['Block'],
-    'Wheelbase': ['Wheelbase'],
-    'Motor': ['Motor'],
-    'Tires': ['Tire'],
-    'Steering & Controls': ['Control'],
-    'Seating': ['Seat'],
-    'Body Parts': ['Body'],
-    'Accessories': ['Accessories']
+const isCompositeCategory = (matrix, categoryId) => {
+    const partIds = new Set(matrix.parts.filter((p) => p.category === categoryId).map((p) => p.id));
+    return matrix.rules.some(
+        (r) =>
+            r.relation === 'REQUIRES' &&
+            partIds.has(r.ifPart) &&
+            partIds.has(r.thenPart)
+    );
 };
-
-const ORDERED_LEVELS = [
-    'Main Block',
-    'Wheelbase',
-    'Motor',
-    'Tires',
-    'Steering & Controls',
-    'Seating',
-    'Body Parts',
-    'Accessories'
-];
 
 const ConfiguratorUI = () => {
     const { 
@@ -40,6 +29,12 @@ const ConfiguratorUI = () => {
     const [searchQuery, setSearchQuery] = useState('');
     const [currentStep, setCurrentStep] = useState(0);
 
+    const buildSteps = useMemo(() => buildOrderedSteps(matrix), [matrix]);
+
+    useEffect(() => {
+        if (currentStep >= buildSteps.length) setCurrentStep(Math.max(0, buildSteps.length - 1));
+    }, [buildSteps.length, currentStep]);
+
     const progress = getBuildProgress();
 
     const filteredParts = useMemo(() => {
@@ -53,7 +48,7 @@ const ConfiguratorUI = () => {
     }, [matrix.parts, searchQuery]);
 
     const handleNext = () => {
-        if (currentStep < ORDERED_LEVELS.length - 1) {
+        if (currentStep < buildSteps.length - 1) {
             setCurrentStep(currentStep + 1);
         }
     };
@@ -64,8 +59,9 @@ const ConfiguratorUI = () => {
         }
     };
 
-    const currentLevelName = ORDERED_LEVELS[currentStep];
-    const categoryIds = LEVEL_TO_CATEGORIES[currentLevelName] || [];
+    const currentStepDef = buildSteps[currentStep] || { label: '', categoryIds: [] };
+    const currentLevelName = currentStepDef.label;
+    const categoryIds = currentStepDef.categoryIds || [];
     const levelCategories = matrix.categories.filter(c => categoryIds.includes(c.id));
     
     // Check if current level has a selection
@@ -80,7 +76,7 @@ const ConfiguratorUI = () => {
     const renderedStep = (
         <div key={currentLevelName} className="journey-step">
             <div className="step-indicator">
-                STEP {currentStep + 1} OF {ORDERED_LEVELS.length}
+                STEP {currentStep + 1} OF {buildSteps.length}
             </div>
             <div className="category-section expanded">
                 <div className="category-header no-click">
@@ -98,7 +94,7 @@ const ConfiguratorUI = () => {
                             filteredParts.some(fp => fp.id === p.id)
                         );
 
-                        const isMulti = category.type === 'multi';
+                        const isMulti = category.type === 'multi' || isCompositeCategory(matrix, catId);
                         const selected = isMulti ? toArray(selectedParts[catId]) : selectedParts[catId];
 
                         return (
@@ -156,7 +152,7 @@ const ConfiguratorUI = () => {
                 <button 
                     className="nav-btn next" 
                     onClick={handleNext}
-                    disabled={currentStep === ORDERED_LEVELS.length - 1}
+                    disabled={currentStep === buildSteps.length - 1}
                 >
                     CONTINUE
                 </button>
