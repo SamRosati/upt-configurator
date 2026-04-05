@@ -6,6 +6,14 @@ import './styles/configurator.css';
 
 function App() {
   const [isAdmin, setIsAdmin] = useState(false);
+  const [theme, setTheme] = useState(() =>
+    localStorage.getItem('upt-theme') === 'light' ? 'light' : 'dark'
+  );
+
+  useEffect(() => {
+    document.documentElement.setAttribute('data-theme', theme);
+    localStorage.setItem('upt-theme', theme);
+  }, [theme]);
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
@@ -23,9 +31,12 @@ function App() {
   return (
     <div className="app-container">
       <div className="canvas-container">
-        <Experience />
+        <Experience theme={theme} />
       </div>
-      <ConfiguratorUI />
+      <ConfiguratorUI
+        theme={theme}
+        onThemeChange={setTheme}
+      />
     </div>
   );
 }

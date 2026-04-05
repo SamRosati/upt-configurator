@@ -15,7 +15,7 @@ const isCompositeCategory = (matrix, categoryId) => {
     );
 };
 
-const ConfiguratorUI = () => {
+const ConfiguratorUI = ({ theme = 'dark', onThemeChange }) => {
     const { 
         matrix, 
         selectedParts, 
@@ -100,13 +100,7 @@ const ConfiguratorUI = () => {
                         return (
                             <div key={catId} className="category-group">
                                 {levelCategories.length > 1 && (
-                                    <div className="category-label" style={{ 
-                                        fontSize: '0.65rem', 
-                                        fontWeight: '800', 
-                                        color: '#bbb', 
-                                        padding: '8px 12px 4px',
-                                        textTransform: 'uppercase'
-                                    }}>
+                                    <div className="category-label">
                                         {category.name}
                                     </div>
                                 )}
@@ -134,7 +128,7 @@ const ConfiguratorUI = () => {
                                         </div>
                                     );
                                 })}
-                                {parts.length === 0 && <div className="no-parts" style={{ padding: '8px 12px', fontSize: '0.7rem', color: '#999' }}>No parts available</div>}
+                                {parts.length === 0 && <div className="no-parts">No parts available</div>}
                             </div>
                         );
                     })}
@@ -182,8 +176,21 @@ const ConfiguratorUI = () => {
     return (
         <div className="configurator-ui">
             <div className="ui-header">
-                <h1>UPT 3D Configurator</h1>
-                <p>Configure your build</p>
+                <div className="ui-header-text">
+                    <h1>UPT 3D Configurator</h1>
+                    <p>Configure your build</p>
+                </div>
+                {typeof onThemeChange === 'function' && (
+                    <button
+                        type="button"
+                        className="theme-toggle"
+                        onClick={() => onThemeChange(theme === 'dark' ? 'light' : 'dark')}
+                        aria-label={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
+                        title={theme === 'dark' ? 'Light mode' : 'Dark mode'}
+                    >
+                        {theme === 'dark' ? '☀️' : '🌙'}
+                    </button>
+                )}
             </div>
 
             <div className="progress-section">

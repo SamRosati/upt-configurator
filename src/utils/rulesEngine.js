@@ -21,6 +21,15 @@ const selectedPartIds = (selectedParts) => {
     return ids;
 };
 
+/** True if both parts are in the same category and that category is single-select (pick one). */
+const sameSingleSelectCategory = (idx, partIdA, partIdB) => {
+    const a = idx.partById.get(partIdA);
+    const b = idx.partById.get(partIdB);
+    if (!a || !b || a.category !== b.category) return false;
+    const cat = idx.categoryById.get(a.category);
+    return !!(cat && cat.type === 'single');
+};
+
 const indexMatrix = (matrix) => {
     const partById = new Map(matrix.parts.map((p) => [p.id, p]));
     const categoryById = new Map(matrix.categories.map((c) => [c.id, c]));
@@ -122,8 +131,10 @@ export const canSelectPart = (selectedParts, partId, matrix) => {
 
     for (const rule of candidateRules) {
         const relation = String(rule.relation).toUpperCase();
+        // Same-category single-select: EXCLUDES means "not both at once", but the user must
+        // still see alternatives to switch (replacing the current pick).
         if (relation === 'EXCLUDES' && selectedSet.has(rule.thenPart)) {
-            return false;
+            if (!sameSingleSelectCategory(idx, partId, rule.thenPart)) return false;
         }
         if (relation === 'REQUIRES') {
             const required = idx.partById.get(rule.thenPart);
@@ -140,9 +151,12 @@ export const canSelectPart = (selectedParts, partId, matrix) => {
     // Also block if any selected part excludes this one.
     for (const selectedId of selectedSet) {
         const rules = idx.rulesByIfPart.get(selectedId) || [];
-        if (rules.some((r) => String(r.relation).toUpperCase() === 'EXCLUDES' && r.thenPart === partId)) {
-            return false;
-        }
+        const blocks = rules.some((r) => {
+            if (String(r.relation).toUpperCase() !== 'EXCLUDES' || r.thenPart !== partId) return false;
+            if (sameSingleSelectCategory(idx, selectedId, partId)) return false;
+            return true;
+        });
+        if (blocks) return false;
     }
 
     return true;

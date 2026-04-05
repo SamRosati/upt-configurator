@@ -2,6 +2,26 @@ import { create } from 'zustand';
 import matrix from '../data/configMatrix.json';
 import { enforceRules } from '../utils/rulesEngine';
 
+const canonicalPartId = (matrixData, rawId) => {
+    if (rawId == null || rawId === '') return rawId;
+    const s = String(rawId);
+    const found = matrixData.parts.find((p) => p.id.toLowerCase() === s.toLowerCase());
+    return found ? found.id : s;
+};
+
+const normalizeUrlSelection = (selected, matrixData) => {
+    if (!selected) return null;
+    const next = {};
+    Object.entries(selected).forEach(([catId, val]) => {
+        if (Array.isArray(val)) {
+            next[catId] = val.map((id) => canonicalPartId(matrixData, id)).filter(Boolean);
+        } else {
+            next[catId] = canonicalPartId(matrixData, val);
+        }
+    });
+    return next;
+};
+
 // Updated to a simpler comma-separated string of IDs
 const getInitialStateFromURL = () => {
     const params = new URLSearchParams(window.location.search);
@@ -19,7 +39,7 @@ const getInitialStateFromURL = () => {
                 selected[catId] = partIds;
             }
         });
-        return selected;
+        return normalizeUrlSelection(selected, matrix);
     } catch (e) {
         console.error('Failed to parse config from URL', e);
         return null;
