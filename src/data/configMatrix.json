@@ -1414,9 +1414,21 @@
       "message": ""
     },
     {
+      "ifPart": "body-frontbumper",
+      "relation": "EXCLUDES",
+      "thenPart": "body-frontbumperop",
+      "message": ""
+    },
+    {
       "ifPart": "body-rearbumper",
       "relation": "REQUIRES",
       "thenPart": "block-single",
+      "message": ""
+    },
+    {
+      "ifPart": "body-rearbumper",
+      "relation": "EXCLUDES",
+      "thenPart": "body-rearbumperop",
       "message": ""
     },
     {
@@ -1426,9 +1438,21 @@
       "message": ""
     },
     {
+      "ifPart": "body-frontbumperop",
+      "relation": "EXCLUDES",
+      "thenPart": "body-frontbumper",
+      "message": ""
+    },
+    {
       "ifPart": "body-rearbumperop",
       "relation": "REQUIRES",
       "thenPart": "block-single",
+      "message": ""
+    },
+    {
+      "ifPart": "body-rearbumperop",
+      "relation": "EXCLUDES",
+      "thenPart": "body-rearbumper",
       "message": ""
     },
     {

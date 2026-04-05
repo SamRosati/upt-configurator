@@ -21,13 +21,11 @@ const selectedPartIds = (selectedParts) => {
     return ids;
 };
 
-/** True if both parts are in the same category and that category is single-select (pick one). */
-const sameSingleSelectCategory = (idx, partIdA, partIdB) => {
+/** Same category: EXCLUDES pairs still appear in the list so the user can switch (single or multi). */
+const samePartCategory = (idx, partIdA, partIdB) => {
     const a = idx.partById.get(partIdA);
     const b = idx.partById.get(partIdB);
-    if (!a || !b || a.category !== b.category) return false;
-    const cat = idx.categoryById.get(a.category);
-    return !!(cat && cat.type === 'single');
+    return !!(a && b && a.category === b.category);
 };
 
 const indexMatrix = (matrix) => {
@@ -141,10 +139,9 @@ export const canSelectPart = (selectedParts, partId, matrix) => {
 
     for (const rule of candidateRules) {
         const relation = String(rule.relation).toUpperCase();
-        // Same-category single-select: EXCLUDES means "not both at once", but the user must
-        // still see alternatives to switch (replacing the current pick).
+        // Same category: EXCLUDES still allows seeing the other option to switch (e.g. bumper vs bumper OP).
         if (relation === 'EXCLUDES' && selectedSet.has(rule.thenPart)) {
-            if (!sameSingleSelectCategory(idx, partId, rule.thenPart)) return false;
+            if (!samePartCategory(idx, partId, rule.thenPart)) return false;
         }
         if (relation === 'REQUIRES') {
             const required = idx.partById.get(rule.thenPart);
@@ -163,7 +160,7 @@ export const canSelectPart = (selectedParts, partId, matrix) => {
         const rules = idx.rulesByIfPart.get(selectedId) || [];
         const blocks = rules.some((r) => {
             if (String(r.relation).toUpperCase() !== 'EXCLUDES' || r.thenPart !== partId) return false;
-            if (sameSingleSelectCategory(idx, selectedId, partId)) return false;
+            if (samePartCategory(idx, selectedId, partId)) return false;
             return true;
         });
         if (blocks) return false;
